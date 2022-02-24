@@ -1,0 +1,17 @@
+html {
+  font-family: 'Raleway', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  align-self: center;
+  font-family: 'Vollkorn', serif;
+  font-weight: 400;
+  margin: 25px auto;
+  text-align: center;
+}
