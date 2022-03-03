@@ -1,5 +1,6 @@
 import React from 'react';
 import NewsdeskFieldset from './NewsdeskFieldset';
+import MaterialTypeFieldset from './MaterialTypeFieldset';
 
 class SearchForm extends React.Component {
   render() {
@@ -21,6 +22,7 @@ class SearchForm extends React.Component {
         </div>
         <div id="filters-container">
           <NewsdeskFieldset />
+          <MaterialTypeFieldset />
         </div>
       </form>
     );
