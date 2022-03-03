@@ -117,7 +117,7 @@ fieldset {
 #filters-container {
   align-items: flex-start;
   column-gap: 15px;
-  display: grid;
+  display: none;
   grid-template: "newsDesk material location";
   margin-top: 20px;
   row-gap: 15px;
