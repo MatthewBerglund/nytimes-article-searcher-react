@@ -1,4 +1,5 @@
 import React from 'react';
+import NewsdeskFieldset from './NewsdeskFieldset';
 
 class SearchForm extends React.Component {
   render() {
@@ -17,6 +18,9 @@ class SearchForm extends React.Component {
             <input id="end-date" type="date" />
           </div>
           <button id="submit">Search</button>
+        </div>
+        <div id="filters-container">
+          <NewsdeskFieldset />
         </div>
       </form>
     );
