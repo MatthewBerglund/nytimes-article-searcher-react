@@ -58,6 +58,7 @@ form {
   border: 1px solid #d6d6d6;
   display: grid;
   grid-template-rows: 70px auto;
+  height: fit-content;
   padding: 10px 15px;
   row-gap: 10px;
   width: 900px;
@@ -121,6 +122,10 @@ fieldset {
   grid-template: "newsDesk material location";
   margin-top: 20px;
   row-gap: 15px;
+}
+
+#filters-container.open {
+  display: grid;
 }
 
 #newsdesk-fieldset {
