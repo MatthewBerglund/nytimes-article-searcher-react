@@ -192,6 +192,10 @@ select:hover {
 
 /* Search results */
 
+li {
+  list-style: none;
+}
+
 article {
   background-color: #00000009;
   display: grid;
@@ -220,22 +224,25 @@ span {
 }
 
 .article-img {
-  display: none;
+  display: block;
   grid-area: image;
   justify-self: flex-end;
   margin-left: 30px;
   max-height: 150px;
+  height: 225px;
+  width: 225px;
+  background: #0061bb;
 }
 
 .article-abstract {
-  display: none;
+  display: block;
   grid-area: abstract;
   margin-top: 20px;
 }
 
 .keywords {
   align-items: baseline;
-  display: none;
+  display: flex;
   flex-flow: wrap;
   grid-area: keywords;
   margin-top: 25px;

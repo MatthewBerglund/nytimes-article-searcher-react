@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import SearchForm from './SearchForm';
+import SearchResults from './SearchResults';
 
 class App extends React.Component {
   render() {
@@ -11,6 +12,7 @@ class App extends React.Component {
         </header>
         <main>
           <SearchForm />
+          <SearchResults />
         </main>
       </div>
     );
