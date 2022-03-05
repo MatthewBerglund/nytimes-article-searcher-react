@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import SearchForm from './SearchForm';
+import SearchSort from './SearchSort';
 import SearchResults from './SearchResults';
 
 class App extends React.Component {
@@ -12,6 +13,11 @@ class App extends React.Component {
         </header>
         <main>
           <SearchForm />
+          <div id="total-hits-container">
+            <p id="total-hits-msg">Your search returned 123 hits.</p>
+          </div>
+          <SearchSort />
+          <p id="loading-msg">Loading...</p>
           <SearchResults />
         </main>
       </div>
