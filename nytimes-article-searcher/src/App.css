@@ -118,7 +118,7 @@ fieldset {
 #filters-container {
   align-items: flex-start;
   column-gap: 15px;
-  display: none;
+  display: grid;
   grid-template: "newsDesk material location";
   margin-top: 20px;
   row-gap: 15px;
@@ -129,12 +129,13 @@ fieldset {
 }
 
 #newsdesk-fieldset {
-  display: grid;
   grid-area: newsDesk;
-  grid-auto-flow: column;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(6, 1fr);
   width: 380px;
+}
+
+#newsdesk-fieldset ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 #material-types-fieldset {
