@@ -1,13 +1,57 @@
 import React from 'react';
-import NewsdeskFieldset from './NewsdeskFieldset';
-import MaterialTypeFieldset from './MaterialTypeFieldset';
+import FilterFieldset from './FilterFieldset';
 
 class SearchForm extends React.Component {
   state = {
     isMenuOpen: false
   };
+
+  newsDesks = {
+    filterType: 'newsdesk',
+    legend: 'News desk',
+    labels: [
+      'Arts', 
+      'Business', 
+      'Culture', 
+      'Home & Garden', 
+      'Health & Fitness', 
+      'Fashion & Style', 
+      'Politics', 
+      'Science', 
+      'Sports', 
+      'Travel'
+    ]
+  }
+
+  materialTypes = {
+    filterType: 'material',
+    legend: 'Material type',
+    labels: [
+      'News', 
+      'Interview', 
+      'Editorial', 
+      'Archives', 
+      'Op-ed'
+    ]
+  }
+
+  renderFiltersContainer = () => {
+   return (
+     <div id="filters-container">
+       <FilterFieldset options={this.newsDesks} />
+       <FilterFieldset options={this.materialTypes} />
+       <div>
+         <label htmlFor="location-search">Location:</label>
+         <input type="search" id="location-search" />
+       </div>
+     </div>
+   );
+  }
   
   render() {
+    const isMenuOpen = this.state.isMenuOpen;
+    const filtersContainer = isMenuOpen ? this.renderFiltersContainer() : null;
+
     return (
       <form onSubmit={this.handleSearchSubmit}>
         <div id="search-controls-container">
@@ -24,14 +68,7 @@ class SearchForm extends React.Component {
           </div>
           <button id="submit">Search</button>
         </div>
-        <div id="filters-container" className={this.state.isMenuOpen ? 'open' : ''}>
-          <NewsdeskFieldset />
-          <MaterialTypeFieldset />
-          <div>
-            <label htmlFor="location-search">Location:</label>
-            <input type="search" id="location-search" />
-          </div>
-        </div>
+        {filtersContainer}
         <button 
           id="filters-button"  
           onClick={event => {
