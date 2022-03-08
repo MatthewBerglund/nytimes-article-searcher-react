@@ -60,25 +60,6 @@ class App extends React.Component {
     });
   }
 
-  // toggleCheckbox = event => {
-  //   const checkbox = event.target;
-  //   const name = checkbox.name;
-  //   const fieldset = checkbox.dataset.fieldset;
-
-  //   const search = {...this.state.search};
-  //   const filterType = search[fieldset];
-
-  //   Object.keys(filterType).forEach(key => {
-  //     if (key === name) {
-  //       filterType[key].isChecked = !filterType[key].isChecked;
-  //     }
-  //   });
-
-  //   this.setState({
-  //     search
-  //   });
-  // }
-
   render() {
     return (
       <div>
