@@ -14,7 +14,7 @@ class App extends React.Component {
         <main>
           <SearchForm />
           <div id="total-hits-container">
-            <p id="total-hits-msg">Your search returned 123 hits.</p>
+            <p>Your search returned 123 hits.</p>
           </div>
           <SearchSort />
           <p id="loading-msg">Loading...</p>
