@@ -42,23 +42,29 @@ class SearchForm extends React.Component {
   }
 
   renderFiltersContainer = () => {
-    const {newsDesks, materialTypes} = this.props.search;
+    const search = this.props.search;
     
     return (
       <div id="filters-container">
         <FilterFieldset
           details={this.newsDesks} 
-          state={newsDesks}
+          state={search.newsDesks}
           setInputState={this.props.setInputState}
         />
         <FilterFieldset 
           details={this.materialTypes}
-          state={materialTypes}
+          state={search.materialTypes}
           setInputState={this.props.setInputState}
         />
         <div>
           <label htmlFor="location-search">Location:</label>
-          <input type="search" id="location-search" />
+          <input 
+            type="search" 
+            id="location-search"
+            name="glocation"
+            value={search.glocation}
+            onChange={this.handleChange}
+          />
         </div>
       </div>
    );
@@ -67,7 +73,7 @@ class SearchForm extends React.Component {
   render() {
     const isMenuOpen = this.state.isMenuOpen;
     const filtersContainer = isMenuOpen ? this.renderFiltersContainer() : null;
-    const {query, begin, end, glocation} = this.props.search;
+    const search = this.props.search;
 
     return (
       <form onSubmit={this.handleSearchSubmit}>
@@ -78,7 +84,7 @@ class SearchForm extends React.Component {
               id="query-input"
               name="query" 
               placeholder="Enter a search term"
-              value={query}
+              value={search.query}
               onChange={this.handleChange}
             />
           </div>
@@ -88,7 +94,7 @@ class SearchForm extends React.Component {
               type="date" 
               id="begin-date" 
               name="begin" 
-              value={begin} 
+              value={search.begin} 
               onChange={this.handleChange} 
             />
           </div>
@@ -98,7 +104,7 @@ class SearchForm extends React.Component {
               type="date" 
               id="end-date" 
               name="end" 
-              value={end} 
+              value={search.end} 
               onChange={this.handleChange} 
             />
           </div>
