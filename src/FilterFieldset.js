@@ -4,12 +4,12 @@ import { slugify } from './helpers';
 
 class FilterFieldset extends React.Component {
   render() {
-    const {filterType, legend, labels} = this.props.options;
+    const {filterType, labels} = this.props.options;
     const fieldsetID = `${filterType}-fieldset`;
 
     return (
       <fieldset id={fieldsetID}>
-          <legend>{legend}</legend>
+          <legend>{filterType}</legend>
           <ul>
             {labels.map(label => {
               return (

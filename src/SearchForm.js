@@ -11,8 +11,7 @@ class SearchForm extends React.Component {
   }
 
   newsDesks = {
-    filterType: 'newsdesk',
-    legend: 'News desk',
+    filterType: 'News desks',
     labels: [
       'Arts', 
       'Business', 
@@ -28,8 +27,7 @@ class SearchForm extends React.Component {
   }
 
   materialTypes = {
-    filterType: 'material',
-    legend: 'Material type',
+    filterType: 'Material types',
     labels: [
       'News', 
       'Interview', 

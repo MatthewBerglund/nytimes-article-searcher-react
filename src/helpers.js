@@ -5,8 +5,16 @@ export function slugify(string) {
 }
 
 export function camelCaseify(string) {
-  const words = string.replace(/\W+/g, ' ').split(' ');
-  const firstWord = words.shift().toLowerCase();
+  string = string.toLowerCase();
+  let words = string.replace(/\W+/g, ' ').split(' ');
+  const firstWord = words.shift();
+  
+  words = words.map(word => {
+    const letters = word.split('');
+    letters[0] = letters[0].toUpperCase();
+    return letters.join('');
+  });
+  
   words.unshift(firstWord);
   return words.join('');
 }

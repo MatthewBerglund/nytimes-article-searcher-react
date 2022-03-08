@@ -18,7 +18,7 @@ class App extends React.Component {
     const search = {...this.state.search};
     
     filtersArray.forEach(filter => {
-      const filterType = filter.filterType;
+      const filterType = camelCaseify(filter.filterType);
       const labels = filter.labels;
       search[filterType] = {};
 
