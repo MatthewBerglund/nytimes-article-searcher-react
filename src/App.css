@@ -25,7 +25,7 @@ h2 {
 
 main {
   display: grid;
-  grid-template-rows: 150px auto auto auto auto 1fr;
+  grid-template-rows: auto auto auto auto 1fr;
   justify-items: center;
   min-height: 100vh;
 }
@@ -58,7 +58,6 @@ form {
   border: 1px solid #d6d6d6;
   display: grid;
   grid-template-rows: 70px auto;
-  height: fit-content;
   padding: 10px 15px;
   row-gap: 10px;
   width: 900px;
@@ -157,7 +156,7 @@ fieldset {
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
-  visibility: hidden;
+  /* visibility: hidden; */
 }
 
 /* Meta info (total hits) */
@@ -185,13 +184,17 @@ select:hover {
 
 #sort-by-container {
   align-items: center;
-  display: none;
+  display: flex;
   justify-content: flex-end;
   margin: 25px 0 10px 0;
   width: 719px;
 }
 
 /* Search results */
+
+li {
+  list-style: none;
+}
 
 article {
   background-color: #00000009;
@@ -221,22 +224,25 @@ span {
 }
 
 .article-img {
-  display: none;
+  display: block;
   grid-area: image;
   justify-self: flex-end;
   margin-left: 30px;
   max-height: 150px;
+  height: 225px;
+  width: 225px;
+  background: #0061bb;
 }
 
 .article-abstract {
-  display: none;
+  display: block;
   grid-area: abstract;
   margin-top: 20px;
 }
 
 .keywords {
   align-items: baseline;
-  display: none;
+  display: flex;
   flex-flow: wrap;
   grid-area: keywords;
   margin-top: 25px;
