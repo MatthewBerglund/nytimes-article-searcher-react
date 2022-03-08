@@ -1,14 +1,26 @@
 import React from "react";
-import { slugify } from './helpers';
+import { slugify, camelCaseify } from './helpers';
 
 class FieldsetOption extends React.Component {
+  handleChange = event => {
+    this.props.toggleCheckbox(event);
+  }
+
   render() {
-    const {filterType, label} = this.props;
-    const inputID = `${filterType}-${slugify(label)}`;
+    const {filterType, label, state} = this.props;
+    const inputID = `${slugify(filterType)}-${slugify(label)}`;
 
     return (
       <li className="fieldset-option-container">
-        <input type="checkbox" id={inputID} value={label} />
+        <input 
+          type="checkbox" 
+          name={camelCaseify(label)} 
+          id={inputID} 
+          value={label}
+          checked={state.isChecked}
+          onChange={this.handleChange}
+          data-fieldset={camelCaseify(filterType)}
+        />
         <label htmlFor={inputID}>
           {label}
         </label>

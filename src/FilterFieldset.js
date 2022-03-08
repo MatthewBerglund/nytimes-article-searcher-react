@@ -1,10 +1,11 @@
 import React from "react";
 import FieldsetOption from "./FieldsetOption";
-import { slugify } from './helpers';
+import { slugify, camelCaseify } from './helpers';
 
 class FilterFieldset extends React.Component {
   render() {
-    const {filterType, labels} = this.props.options;
+    const {filterType, labels} = this.props.details;
+    const state = this.props.state;
     const fieldsetID = `${filterType}-fieldset`;
 
     return (
@@ -17,6 +18,8 @@ class FilterFieldset extends React.Component {
                   key={slugify(label)}
                   label={label}
                   filterType={filterType}
+                  state={state[camelCaseify(label)]}
+                  toggleCheckbox={this.props.toggleCheckbox}
                 />
               );
             })}

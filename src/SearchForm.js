@@ -38,15 +38,23 @@ class SearchForm extends React.Component {
   }
 
   renderFiltersContainer = () => {
-   return (
-     <div id="filters-container">
-       <FilterFieldset options={this.newsDesks} />
-       <FilterFieldset options={this.materialTypes} />
-       <div>
-         <label htmlFor="location-search">Location:</label>
-         <input type="search" id="location-search" />
-       </div>
-     </div>
+    return (
+      <div id="filters-container">
+        <FilterFieldset
+          details={this.newsDesks} 
+          state={this.props.search.newsDesks}
+          toggleCheckbox={this.props.toggleCheckbox}
+        />
+        <FilterFieldset 
+          details={this.materialTypes}
+          state={this.props.search.materialTypes}
+          toggleCheckbox={this.props.toggleCheckbox}
+        />
+        <div>
+          <label htmlFor="location-search">Location:</label>
+          <input type="search" id="location-search" />
+        </div>
+      </div>
    );
   }
   

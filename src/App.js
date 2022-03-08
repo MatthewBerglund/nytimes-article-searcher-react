@@ -36,6 +36,25 @@ class App extends React.Component {
     });
   }
 
+  toggleCheckbox = event => {
+    const checkbox = event.target;
+    const name = checkbox.name;
+    const fieldset = checkbox.dataset.fieldset;
+
+    const search = {...this.state.search};
+    const filterType = search[fieldset];
+
+    Object.keys(filterType).forEach(key => {
+      if (key === name) {
+        filterType[key].isChecked = !filterType[key].isChecked;
+      }
+    });
+
+    this.setState({
+      search
+    });
+  }
+
   render() {
     return (
       <div>
@@ -43,7 +62,11 @@ class App extends React.Component {
           <h1>NYT Article Search</h1>
         </header>
         <main>
-          <SearchForm addFiltersToState={this.addFiltersToState} />
+          <SearchForm 
+            search={this.state.search}
+            addFiltersToState={this.addFiltersToState}
+            toggleCheckbox={this.toggleCheckbox} 
+          />
           <div id="total-hits-container">
             <p>Your search returned 123 hits.</p>
           </div>
