@@ -6,7 +6,7 @@ class FilterFieldset extends React.Component {
   render() {
     const {filterType, labels} = this.props.details;
     const state = this.props.state;
-    const fieldsetID = `${filterType}-fieldset`;
+    const fieldsetID = `${slugify(filterType)}-fieldset`;
 
     return (
       <fieldset id={fieldsetID}>
