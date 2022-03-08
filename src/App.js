@@ -11,8 +11,8 @@ class App extends React.Component {
       query: '',
       begin: '',
       end: '',
-      sortBy: '',
-      glocation: ''
+      glocation: '',
+      sortBy: 'relevance'
     }
   }
 
@@ -94,7 +94,10 @@ class App extends React.Component {
           <div id="total-hits-container">
             <p>Your search returned 123 hits.</p>
           </div>
-          <SearchSort />
+          <SearchSort
+            search={this.state.search}
+            setInputState={this.setInputState} 
+          />
           <p id="loading-msg">Loading...</p>
           <SearchResults />
         </main>
