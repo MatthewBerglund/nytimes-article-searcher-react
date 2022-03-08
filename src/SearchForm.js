@@ -6,6 +6,10 @@ class SearchForm extends React.Component {
     isMenuOpen: false
   };
 
+  componentDidMount() {
+    this.props.addFiltersToState([this.newsDesks, this.materialTypes]);
+  }
+
   newsDesks = {
     filterType: 'newsdesk',
     legend: 'News desk',

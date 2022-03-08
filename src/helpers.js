@@ -3,3 +3,10 @@ export function slugify(string) {
   formattedString = formattedString.replace(/\W+/g, '-');
   return formattedString;
 }
+
+export function camelCaseify(string) {
+  const words = string.replace(/\W+/g, ' ').split(' ');
+  const firstWord = words.shift().toLowerCase();
+  words.unshift(firstWord);
+  return words.join('');
+}
