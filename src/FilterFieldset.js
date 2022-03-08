@@ -19,7 +19,7 @@ class FilterFieldset extends React.Component {
                   label={label}
                   filterType={filterType}
                   state={state[camelCaseify(label)]}
-                  toggleCheckbox={this.props.toggleCheckbox}
+                  setInputState={this.props.setInputState}
                 />
               );
             })}

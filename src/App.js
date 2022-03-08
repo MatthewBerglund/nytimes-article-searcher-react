@@ -10,7 +10,9 @@ class App extends React.Component {
     search: {
       query: '',
       begin: '',
-      end: ''
+      end: '',
+      sortBy: '',
+      glocation: ''
     }
   }
 
@@ -36,24 +38,46 @@ class App extends React.Component {
     });
   }
 
-  toggleCheckbox = event => {
-    const checkbox = event.target;
-    const name = checkbox.name;
-    const fieldset = checkbox.dataset.fieldset;
+  setInputState = event => {
+    const search = {...this.state.search}
+    const input = event.target;
+    const name = input.name;
 
-    const search = {...this.state.search};
-    const filterType = search[fieldset];
-
-    Object.keys(filterType).forEach(key => {
-      if (key === name) {
-        filterType[key].isChecked = !filterType[key].isChecked;
-      }
-    });
+    if (input.type === 'checkbox') {
+      const fieldset = input.dataset.fieldset;
+      const filterType = search[fieldset];
+      Object.keys(filterType).forEach(key => {
+        if (key === name) {
+          filterType[key].isChecked = !filterType[key].isChecked;
+        }
+      });
+    } else {
+      search[name] = input.value;
+    }
 
     this.setState({
       search
     });
   }
+
+  // toggleCheckbox = event => {
+  //   const checkbox = event.target;
+  //   const name = checkbox.name;
+  //   const fieldset = checkbox.dataset.fieldset;
+
+  //   const search = {...this.state.search};
+  //   const filterType = search[fieldset];
+
+  //   Object.keys(filterType).forEach(key => {
+  //     if (key === name) {
+  //       filterType[key].isChecked = !filterType[key].isChecked;
+  //     }
+  //   });
+
+  //   this.setState({
+  //     search
+  //   });
+  // }
 
   render() {
     return (
@@ -65,7 +89,7 @@ class App extends React.Component {
           <SearchForm 
             search={this.state.search}
             addFiltersToState={this.addFiltersToState}
-            toggleCheckbox={this.toggleCheckbox} 
+            setInputState={this.setInputState} 
           />
           <div id="total-hits-container">
             <p>Your search returned 123 hits.</p>

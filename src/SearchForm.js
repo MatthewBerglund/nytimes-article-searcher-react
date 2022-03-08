@@ -37,18 +37,22 @@ class SearchForm extends React.Component {
     ]
   }
 
+  handleChange = event => {
+    this.props.setInputState(event);
+  }
+
   renderFiltersContainer = () => {
     return (
       <div id="filters-container">
         <FilterFieldset
           details={this.newsDesks} 
           state={this.props.search.newsDesks}
-          toggleCheckbox={this.props.toggleCheckbox}
+          setInputState={this.props.setInputState}
         />
         <FilterFieldset 
           details={this.materialTypes}
           state={this.props.search.materialTypes}
-          toggleCheckbox={this.props.toggleCheckbox}
+          setInputState={this.props.setInputState}
         />
         <div>
           <label htmlFor="location-search">Location:</label>
@@ -66,7 +70,14 @@ class SearchForm extends React.Component {
       <form onSubmit={this.handleSearchSubmit}>
         <div id="search-controls-container">
           <div>
-            <input id="query-input" type="search" placeholder="Enter a search term" />
+            <input
+              type="search" 
+              id="query-input"
+              name="query" 
+              placeholder="Enter a search term"
+              value={this.props.search.query}
+              onChange={this.handleChange}
+            />
           </div>
           <div>
             <label htmlFor="begin-date">Start:</label>

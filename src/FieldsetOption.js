@@ -3,7 +3,7 @@ import { slugify, camelCaseify } from './helpers';
 
 class FieldsetOption extends React.Component {
   handleChange = event => {
-    this.props.toggleCheckbox(event);
+    this.props.setInputState(event);
   }
 
   render() {
