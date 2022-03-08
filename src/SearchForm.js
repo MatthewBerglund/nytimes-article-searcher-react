@@ -42,16 +42,18 @@ class SearchForm extends React.Component {
   }
 
   renderFiltersContainer = () => {
+    const {newsDesks, materialTypes} = this.props.search;
+    
     return (
       <div id="filters-container">
         <FilterFieldset
           details={this.newsDesks} 
-          state={this.props.search.newsDesks}
+          state={newsDesks}
           setInputState={this.props.setInputState}
         />
         <FilterFieldset 
           details={this.materialTypes}
-          state={this.props.search.materialTypes}
+          state={materialTypes}
           setInputState={this.props.setInputState}
         />
         <div>
@@ -65,6 +67,7 @@ class SearchForm extends React.Component {
   render() {
     const isMenuOpen = this.state.isMenuOpen;
     const filtersContainer = isMenuOpen ? this.renderFiltersContainer() : null;
+    const {query, begin, end, glocation} = this.props.search;
 
     return (
       <form onSubmit={this.handleSearchSubmit}>
@@ -75,17 +78,29 @@ class SearchForm extends React.Component {
               id="query-input"
               name="query" 
               placeholder="Enter a search term"
-              value={this.props.search.query}
+              value={query}
               onChange={this.handleChange}
             />
           </div>
           <div>
             <label htmlFor="begin-date">Start:</label>
-            <input id="begin-date" type="date" />
+            <input 
+              type="date" 
+              id="begin-date" 
+              name="begin" 
+              value={begin} 
+              onChange={this.handleChange} 
+            />
           </div>
           <div>
             <label htmlFor="end-date">End:</label>
-            <input id="end-date" type="date" />
+            <input 
+              type="date" 
+              id="end-date" 
+              name="end" 
+              value={end} 
+              onChange={this.handleChange} 
+            />
           </div>
           <button id="submit">Search</button>
         </div>
