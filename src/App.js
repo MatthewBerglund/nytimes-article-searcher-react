@@ -3,7 +3,8 @@ import './App.css';
 import SearchForm from './SearchForm';
 import SearchSort from './SearchSort';
 import SearchResults from './SearchResults';
-import {camelCaseify} from './helpers';
+import { camelCaseify } from './helpers';
+import { is } from '@babel/types';
 
 class App extends React.Component {
   state = {
@@ -16,17 +17,16 @@ class App extends React.Component {
     }
   }
 
-  addFiltersToState = filtersArray => {
+  addFiltersToState = filters => {
     const search = {...this.state.search};
     
-    filtersArray.forEach(filter => {
+    filters.forEach(filter => {
       const filterType = camelCaseify(filter.filterType);
-      const labels = filter.labels;
       search[filterType] = {};
 
+      const labels = filter.labels;
       labels.forEach(label => {
         label = camelCaseify(label);
-        
         search[filterType][label] = {
           isChecked: false
         }
@@ -48,7 +48,8 @@ class App extends React.Component {
       const filterType = search[fieldset];
       Object.keys(filterType).forEach(key => {
         if (key === name) {
-          filterType[key].isChecked = !filterType[key].isChecked;
+          const filter = filterType[key];
+          filter.isChecked = !filter.isChecked;
         }
       });
     } else {
