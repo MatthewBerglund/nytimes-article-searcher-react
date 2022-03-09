@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/nytimes-article-searcher-react/static/css/main.7e7ea7d8.css",
+    "main.js": "/nytimes-article-searcher-react/static/js/main.0960a021.js",
+    "index.html": "/nytimes-article-searcher-react/index.html",
+    "main.7e7ea7d8.css.map": "/nytimes-article-searcher-react/static/css/main.7e7ea7d8.css.map",
+    "main.0960a021.js.map": "/nytimes-article-searcher-react/static/js/main.0960a021.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7e7ea7d8.css",
+    "static/js/main.0960a021.js"
+  ]
+}
