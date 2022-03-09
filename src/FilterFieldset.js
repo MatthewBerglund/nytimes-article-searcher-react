@@ -4,22 +4,21 @@ import { slugify, camelCaseify } from './helpers';
 
 class FilterFieldset extends React.Component {
   render() {
-    const {filterType, labels} = this.props.details;
-    const state = this.props.state;
-    const fieldsetID = `${slugify(filterType)}-fieldset`;
+    const {details, state, setInputState} = this.props;
+    const fieldsetID = `${slugify(details.filterType)}-fieldset`;
 
     return (
       <fieldset id={fieldsetID}>
-          <legend>{filterType}</legend>
+          <legend>{details.filterType}</legend>
           <ul>
-            {labels.map(label => {
+            {details.labels.map(label => {
               return (
                 <FieldsetOption
                   key={slugify(label)}
                   label={label}
-                  filterType={filterType}
+                  filterType={details.filterType}
                   state={state[camelCaseify(label)]}
-                  setInputState={this.props.setInputState}
+                  setInputState={setInputState}
                 />
               );
             })}
