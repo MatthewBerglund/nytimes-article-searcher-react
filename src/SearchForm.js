@@ -7,7 +7,11 @@ class SearchForm extends React.Component {
   };
 
   componentDidMount() {
-    this.props.addFiltersToState([this.newsDesks, this.materialTypes]);
+    const filters = [
+      this.newsDesks, 
+      this.materialTypes
+    ];
+    this.props.addFiltersToState(filters);
   }
 
   newsDesks = {
@@ -37,7 +41,7 @@ class SearchForm extends React.Component {
     ]
   }
 
-  handleChange = event => {
+  handleInputChange = event => {
     this.props.setInputState(event);
   }
 
@@ -63,7 +67,7 @@ class SearchForm extends React.Component {
             id="location-search"
             name="glocation"
             value={search.glocation}
-            onChange={this.handleChange}
+            onChange={this.handleInputChange}
           />
         </div>
       </div>
@@ -76,7 +80,7 @@ class SearchForm extends React.Component {
     const search = this.props.search;
 
     return (
-      <form onSubmit={this.handleSearchSubmit}>
+      <form>
         <div id="search-controls-container">
           <div>
             <input
@@ -85,7 +89,7 @@ class SearchForm extends React.Component {
               name="query" 
               placeholder="Enter a search term"
               value={search.query}
-              onChange={this.handleChange}
+              onChange={this.handleInputChange}
             />
           </div>
           <div>
@@ -95,7 +99,7 @@ class SearchForm extends React.Component {
               id="begin-date" 
               name="begin" 
               value={search.begin} 
-              onChange={this.handleChange} 
+              onChange={this.handleInputChange} 
             />
           </div>
           <div>
@@ -105,7 +109,7 @@ class SearchForm extends React.Component {
               id="end-date" 
               name="end" 
               value={search.end} 
-              onChange={this.handleChange} 
+              onChange={this.handleInputChange} 
             />
           </div>
           <button id="submit">Search</button>
