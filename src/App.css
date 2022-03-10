@@ -122,12 +122,12 @@ fieldset {
   display: grid;
 }
 
-#news-desks-fieldset {
+#news-desk-fieldset {
   grid-area: newsDesk;
   width: 380px;
 }
 
-#news-desks-fieldset ul {
+#news-desk-fieldset ul {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
