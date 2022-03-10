@@ -2,27 +2,42 @@ import React from "react";
 import { slugify, camelCaseify } from './helpers';
 
 class FieldsetOption extends React.Component {
-  handleChange = event => {
-    this.props.setInputState(event);
+  handleCheckboxChange = e => {
+    const checkbox = e.target;
+    const filterValue = checkbox.value;
+    const filterField = checkbox.dataset.filterField;
+    const isFilterActive = checkbox.checked;
+    this.toggleFilter(filterField, filterValue, isFilterActive);
+  }
+
+  toggleFilter = (filterField, filterValue, isFilterActive) => {
+    const searchState = {...this.props.search};
+    if (isFilterActive) {
+      searchState[filterField].push(filterValue);
+    } else {
+      const indexToRemove = searchState[filterField].indexOf(filterValue);
+      searchState[filterField].splice(indexToRemove, 1);
+    }
+    this.props.setSearch(searchState);
   }
 
   render() {
-    const {filterType, label, state} = this.props;
-    const inputID = `${slugify(filterType)}-${slugify(label)}`;
+    const {filterField, filterValue, search} = this.props;
+    const inputID = `${slugify(filterField)}-${slugify(filterValue)}`;
+    const isFilterActive = search[camelCaseify(filterField)].includes(filterValue);
 
     return (
       <li className="fieldset-option-container">
         <input 
-          type="checkbox" 
-          name={camelCaseify(label)} 
+          type="checkbox"  
           id={inputID} 
-          value={label}
-          checked={state.isChecked}
-          onChange={this.handleChange}
-          data-fieldset={camelCaseify(filterType)}
+          value={filterValue}
+          data-filter-field={camelCaseify(filterField)}
+          checked={isFilterActive}
+          onChange={this.handleCheckboxChange}
         />
         <label htmlFor={inputID}>
-          {label}
+          {filterValue}
         </label>
       </li>
     );

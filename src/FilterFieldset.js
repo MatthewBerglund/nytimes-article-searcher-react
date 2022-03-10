@@ -1,24 +1,25 @@
 import React from "react";
 import FieldsetOption from "./FieldsetOption";
-import { slugify, camelCaseify } from './helpers';
+import { slugify } from './helpers';
 
 class FilterFieldset extends React.Component {
   render() {
-    const {details, state, setInputState} = this.props;
-    const fieldsetID = `${slugify(details.filterType)}-fieldset`;
+    const filterField = this.props.filterField;
+    const filterValues = this.props.filterValues;
+    const fieldsetID = `${slugify(filterField)}-fieldset`;
 
     return (
       <fieldset id={fieldsetID}>
-          <legend>{details.filterType}</legend>
+          <legend>{filterField}</legend>
           <ul>
-            {details.labels.map(label => {
+            {filterValues.map(value => {
               return (
                 <FieldsetOption
-                  key={slugify(label)}
-                  label={label}
-                  filterType={details.filterType}
-                  state={state[camelCaseify(label)]}
-                  setInputState={setInputState}
+                  key={slugify(value)}
+                  filterValue={value}
+                  filterField={filterField}
+                  search={this.props.search}
+                  setSearch={this.props.setSearch}
                 />
               );
             })}

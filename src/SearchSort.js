@@ -1,6 +1,16 @@
 import React from "react";
 
 class SearchSort extends React.Component {
+  handleSelectChange = e => {
+    this.updateSortBy(e.target.value);
+  }
+
+  updateSortBy = value => {
+    const searchState = {...this.props.search};
+    searchState.sortBy = value;
+    this.props.setSearch(searchState);
+  }
+  
   render() {
     return (
       <div id="sort-by-container">
@@ -9,7 +19,7 @@ class SearchSort extends React.Component {
           name="sortBy" 
           id="sort-by-select" 
           value={this.props.search.sortBy}
-          onChange={event => {this.props.setInputState(event)}}
+          onChange={this.handleSelectChange}
         >
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
