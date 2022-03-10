@@ -4,8 +4,7 @@ import { slugify } from './helpers';
 
 class FilterFieldset extends React.Component {
   render() {
-    const filterField = this.props.filterField;
-    const filterValues = this.props.filterValues;
+    const {filterField, filterValues, search, setSearch} = this.props;
     const fieldsetID = `${slugify(filterField)}-fieldset`;
 
     return (
@@ -18,8 +17,8 @@ class FilterFieldset extends React.Component {
                   key={slugify(value)}
                   filterValue={value}
                   filterField={filterField}
-                  search={this.props.search}
-                  setSearch={this.props.setSearch}
+                  search={search}
+                  setSearch={setSearch}
                 />
               );
             })}
