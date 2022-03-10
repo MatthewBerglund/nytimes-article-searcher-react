@@ -5,7 +5,7 @@ class FieldsetOption extends React.Component {
   handleCheckboxChange = e => {
     const checkbox = e.target;
     const filterValue = checkbox.value;
-    const filterField = checkbox.dataset.filterField;
+    const filterField = camelCaseify(this.props.filterField);
     const isFilterActive = checkbox.checked;
     this.toggleFilter(filterField, filterValue, isFilterActive);
   }
@@ -32,7 +32,6 @@ class FieldsetOption extends React.Component {
           type="checkbox"  
           id={inputID} 
           value={filterValue}
-          data-filter-field={camelCaseify(filterField)}
           checked={isFilterActive}
           onChange={this.handleCheckboxChange}
         />
