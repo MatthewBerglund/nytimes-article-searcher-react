@@ -4,21 +4,21 @@ import { slugify } from './helpers';
 
 class FilterFieldset extends React.Component {
   render() {
-    const {filterField, filterValues, search, setSearch} = this.props;
-    const fieldsetID = `${slugify(filterField)}-fieldset`;
+    const {fieldsetName, checkboxValues, activeFilterValues, setFilter} = this.props;
+    const fieldsetID = `${slugify(fieldsetName)}-fieldset`;
 
     return (
       <fieldset id={fieldsetID}>
-          <legend>{filterField}</legend>
+          <legend>{fieldsetName}</legend>
           <ul>
-            {filterValues.map(value => {
+            {checkboxValues.map(value => {
               return (
                 <FieldsetOption
+                  fieldsetName={fieldsetName}
                   key={slugify(value)}
-                  filterValue={value}
-                  filterField={filterField}
-                  search={search}
-                  setSearch={setSearch}
+                  checkboxValue={value}
+                  activeFilterValues={activeFilterValues}
+                  setFilter={setFilter}
                 />
               );
             })}

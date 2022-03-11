@@ -1,42 +1,39 @@
 import React from "react";
-import { slugify, camelCaseify } from './helpers';
+import { slugify } from './helpers';
 
+// Renders a checkbox that enables/disables a corresponding search filter
 class FieldsetOption extends React.Component {
-  handleCheckboxChange = e => {
-    const checkbox = e.target;
-    const filterValue = checkbox.value;
-    const filterField = camelCaseify(this.props.filterField);
-    const isFilterActive = checkbox.checked;
-    this.toggleFilter(filterField, filterValue, isFilterActive);
+  // Add checkbox value to active filters in state
+  enableFilter = checkboxValue => {
+    const activeFilterValues = this.props.activeFilterValues.slice(0);
+    activeFilterValues.push(checkboxValue);
+    this.props.setFilter(activeFilterValues);
   }
-
-  toggleFilter = (filterField, filterValue, isFilterActive) => {
-    const searchState = {...this.props.search};
-    if (isFilterActive) {
-      searchState[filterField].push(filterValue);
-    } else {
-      const indexToRemove = searchState[filterField].indexOf(filterValue);
-      searchState[filterField].splice(indexToRemove, 1);
-    }
-    this.props.setSearch(searchState);
+  
+  // Remove checkbox value from active filters in state
+  disableFilter = checkboxValue => {
+    const activeFilterValues = this.props.activeFilterValues.slice(0);
+    const indexToRemove = activeFilterValues.indexOf(checkboxValue);
+    activeFilterValues.splice(indexToRemove, 1);
+    this.props.setFilter(activeFilterValues);
   }
 
   render() {
-    const {filterField, filterValue, search} = this.props;
-    const inputID = `${slugify(filterField)}-${slugify(filterValue)}`;
-    const isFilterActive = search[camelCaseify(filterField)].includes(filterValue);
+    const {fieldsetName, checkboxValue, activeFilterValues} = this.props;
+    const checkboxID = `${slugify(fieldsetName)}-${slugify(checkboxValue)}`;
+    const isChecked = activeFilterValues.includes(checkboxValue);
 
     return (
       <li className="fieldset-option-container">
         <input 
           type="checkbox"  
-          id={inputID} 
-          value={filterValue}
-          checked={isFilterActive}
-          onChange={this.handleCheckboxChange}
+          id={checkboxID} 
+          value={checkboxValue}
+          checked={isChecked}
+          onChange={e => e.target.checked ? this.enableFilter(e.target.value) : this.disableFilter(e.target.value)}
         />
-        <label htmlFor={inputID}>
-          {filterValue}
+        <label htmlFor={checkboxID}>
+          {checkboxValue}
         </label>
       </li>
     );

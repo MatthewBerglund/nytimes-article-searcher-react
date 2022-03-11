@@ -1,3 +1,4 @@
+import { getSuggestedQuery } from '@testing-library/react';
 import React from 'react';
 import FilterFieldset from './FilterFieldset';
 
@@ -28,32 +29,20 @@ class SearchForm extends React.Component {
     ]
   }
 
-  handleFormElementChange = e => {
-    const name = e.target.name;
-    const value = e.target.value;
-    this.updateSearch(name, value);
-  }
-
-  updateSearch = (name, value) => {
-    const searchState = {...this.props.search};
-    searchState[name] = value;
-    this.props.setSearch(searchState);
-  }
-
   renderFiltersContainer = () => {
     return (
       <div id="filters-container">
         <FilterFieldset
-          filterField="News desk"
-          filterValues={this.filters.newsDesk}
-          search={this.props.search}
-          setSearch={this.props.setSearch}
+          fieldsetName="News desks"
+          checkboxValues={this.filters.newsDesk}
+          activeFilterValues={this.props.newsDeskFilter}
+          setFilter={this.props.setNewsDeskFilter}
         />
         <FilterFieldset
-          filterField="Type of material"
-          filterValues={this.filters.typeOfMaterial}
-          search={this.props.search}
-          setSearch={this.props.setSearch}
+          fieldsetName="Material types"
+          checkboxValues={this.filters.typeOfMaterial}
+          activeFilterValues={this.props.materialTypeFilter}
+          setFilter={this.props.setMaterialTypeFilter}
         />
         <div>
           <label htmlFor="location-search">Location:</label>
@@ -61,8 +50,8 @@ class SearchForm extends React.Component {
             type="search" 
             id="location-search"
             name="glocation"
-            value={this.props.search.glocation}
-            onChange={this.handleFormElementChange}
+            value={this.props.glocationFilter}
+            onChange={e => this.props.setGlocationFilter(e.target.value)}
           />
         </div>
       </div>
@@ -82,8 +71,8 @@ class SearchForm extends React.Component {
               id="query-input"
               name="query" 
               placeholder="Enter a search term"
-              value={this.props.search.query}
-              onChange={this.handleFormElementChange}
+              value={this.props.query}
+              onChange={e => this.props.setQuery(e.target.value)}
             />
           </div>
           <div>
@@ -92,8 +81,8 @@ class SearchForm extends React.Component {
               type="date" 
               id="begin-date" 
               name="begin" 
-              value={this.props.search.begin} 
-              onChange={this.handleFormElementChange}
+              value={this.props.beginDate} 
+              onChange={e => this.props.setBeginDate(e.target.value)}
             />
           </div>
           <div>
@@ -102,8 +91,8 @@ class SearchForm extends React.Component {
               type="date" 
               id="end-date" 
               name="end" 
-              value={this.props.search.end}
-              onChange={this.handleFormElementChange} 
+              value={this.props.endDate}
+              onChange={e => this.props.setEndDate(e.target.value)} 
             />
           </div>
           <button id="submit">Search</button>

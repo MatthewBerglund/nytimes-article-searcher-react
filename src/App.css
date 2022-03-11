@@ -176,7 +176,7 @@ select:hover {
   text-decoration: underline;
 }
 
-#sort-by-container {
+#sort-order-container {
   align-items: center;
   display: flex;
   justify-content: flex-end;

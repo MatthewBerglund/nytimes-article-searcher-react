@@ -5,15 +5,13 @@ import SearchSort from './SearchSort';
 import SearchResults from './SearchResults';
 
 function App() {
-  const [search, setSearch] = useState({
-    query: '',
-    begin: '',
-    end: '',
-    glocation: '',
-    sortBy: 'relevance',
-    newsDesk: [],
-    typeOfMaterial: []
-  });
+  const [query, setQuery] = useState('');
+  const [beginDate, setBeginDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [glocationFilter, setGlocationFilter] = useState('');
+  const [newsDeskFilter, setNewsDeskFilter] = useState([]);
+  const [materialTypeFilter, setMaterialTypeFilter] = useState([]);
+  const [sortOrder, setSortOrder] = useState('relevance');
 
   return (
     <div>
@@ -22,15 +20,25 @@ function App() {
       </header>
       <main>
         <SearchForm
-          search={search}
-          setSearch={setSearch}
+          query={query}
+          setQuery={setQuery}
+          beginDate={beginDate}
+          setBeginDate={setBeginDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          glocationFilter={glocationFilter}
+          setGlocationFilter={setGlocationFilter}
+          newsDeskFilter={newsDeskFilter}
+          setNewsDeskFilter={setNewsDeskFilter}
+          materialTypeFilter={materialTypeFilter}
+          setMaterialTypeFilter={setMaterialTypeFilter}
         />
         <div id="total-hits-container">
           <p>Your search returned 123 hits.</p>
         </div>
         <SearchSort
-          search={search}
-          setSearch={setSearch}
+          sortOrder={sortOrder}
+          setSortOrder={setSortOrder}
         />
         <p id="loading-msg">Loading...</p>
         <SearchResults />
