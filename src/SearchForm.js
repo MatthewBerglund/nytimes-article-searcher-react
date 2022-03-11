@@ -7,7 +7,7 @@ class SearchForm extends React.Component {
   };
 
   filters = {
-    newsDesk: [
+    newsDesks: [
       'Arts',
       'Business',
       'Culture',
@@ -19,7 +19,7 @@ class SearchForm extends React.Component {
       'Sports',
       'Travel'
     ],
-    typeOfMaterial: [
+    materialTypes: [
       'News',
       'Interview',
       'Editorial',
@@ -33,13 +33,13 @@ class SearchForm extends React.Component {
       <div id="filters-container">
         <FilterFieldset
           fieldsetName="News desks"
-          checkboxValues={this.filters.newsDesk}
+          checkboxValues={this.filters.newsDesks}
           activeFilterValues={this.props.newsDeskFilter}
           setFilter={this.props.setNewsDeskFilter}
         />
         <FilterFieldset
           fieldsetName="Material types"
-          checkboxValues={this.filters.typeOfMaterial}
+          checkboxValues={this.filters.materialTypes}
           activeFilterValues={this.props.materialTypeFilter}
           setFilter={this.props.setMaterialTypeFilter}
         />
@@ -70,8 +70,12 @@ class SearchForm extends React.Component {
               id="query-input"
               name="query" 
               placeholder="Enter a search term"
-              value={this.props.query}
-              onChange={e => this.props.setQuery(e.target.value)}
+              value={this.props.searchQuery.query}
+              onChange={e => {
+                const searchQuery = {...this.props.searchQuery};
+                searchQuery.query = e.target.value;
+                this.props.setSearchQuery(searchQuery);
+              }}
             />
           </div>
           <div>
@@ -80,8 +84,12 @@ class SearchForm extends React.Component {
               type="date" 
               id="begin-date" 
               name="begin" 
-              value={this.props.beginDate} 
-              onChange={e => this.props.setBeginDate(e.target.value)}
+              value={this.props.searchQuery.beginDate} 
+              onChange={e => {
+                const searchQuery = {...this.props.searchQuery};
+                searchQuery.beginDate = e.target.value;
+                this.props.setSearchQuery(searchQuery);
+              }}
             />
           </div>
           <div>
@@ -90,8 +98,12 @@ class SearchForm extends React.Component {
               type="date" 
               id="end-date" 
               name="end" 
-              value={this.props.endDate}
-              onChange={e => this.props.setEndDate(e.target.value)} 
+              value={this.props.searchQuery.endDate}
+              onChange={e => {
+                const searchQuery = {...this.props.searchQuery};
+                searchQuery.endDate = e.target.value;
+                this.props.setSearchQuery(searchQuery);
+              }} 
             />
           </div>
           <button id="submit">Search</button>

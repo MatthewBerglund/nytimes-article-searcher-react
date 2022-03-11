@@ -26,7 +26,7 @@ class FieldsetOption extends React.Component {
     return (
       <li className="fieldset-option-container">
         <input 
-          type="checkbox"  
+          type="checkbox"
           id={checkboxID} 
           value={checkboxValue}
           checked={isChecked}

@@ -5,9 +5,11 @@ import SearchSort from './SearchSort';
 import SearchResults from './SearchResults';
 
 function App() {
-  const [query, setQuery] = useState('');
-  const [beginDate, setBeginDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [searchQuery, setSearchQuery] = useState({
+    query: '',
+    beginDate: '',
+    endDate: ''
+  });
   const [glocationFilter, setGlocationFilter] = useState('');
   const [newsDeskFilter, setNewsDeskFilter] = useState([]);
   const [materialTypeFilter, setMaterialTypeFilter] = useState([]);
@@ -20,12 +22,8 @@ function App() {
       </header>
       <main>
         <SearchForm
-          query={query}
-          setQuery={setQuery}
-          beginDate={beginDate}
-          setBeginDate={setBeginDate}
-          endDate={endDate}
-          setEndDate={setEndDate}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
           glocationFilter={glocationFilter}
           setGlocationFilter={setGlocationFilter}
           newsDeskFilter={newsDeskFilter}
