@@ -20,12 +20,11 @@ function App() {
   const fetchArticles = async () => {
     const baseURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
     const key = 'brtQ9fXA0I1ATPctklZe6RcanXZRklYl';
-    let fullURL = `${baseURL}?api-key=${key}&page=${page}`;
+    let fullURL = `${baseURL}?api-key=${key}&page=${page}&sort=${sortOrder}`;
 
     fullURL += searchQuery.query ? `&q=${searchQuery.query}` : '';
     fullURL += searchQuery.beginDate ? `&begin_date=${searchQuery.beginDate}` : '';
     fullURL += searchQuery.endDate ? `&end_date=${searchQuery.endDate}` : '';
-    fullURL += searchQuery.sortOrder ? `&sort=${searchQuery.sortOrder}` : '';
 
     let activeFilters = getActiveFiltersForFetchURL();
     fullURL += activeFilters.length > 0 ? `&fq=${activeFilters.join(' AND ')}` : '';
@@ -35,6 +34,8 @@ function App() {
     setArticles(fetchedArticles);
   }
 
+  // Encodes all active filter fields and values and returns them 
+  // in an array for insertion into the API fetch URL.
   const getActiveFiltersForFetchURL = () => {
     let filters = [];
 
@@ -84,6 +85,7 @@ function App() {
         <SearchSort
           sortOrder={sortOrder}
           setSortOrder={setSortOrder}
+          fetchArticles={fetchArticles}
         />
         <p id="loading-msg">Loading...</p>
         <SearchResults />

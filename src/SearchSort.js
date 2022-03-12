@@ -11,7 +11,10 @@ class SearchSort extends React.Component {
           name="sortOrder" 
           id="sort-order-select" 
           value={sortOrder}
-          onChange={e => setSortOrder(e.target.value)}
+          onChange={e => {
+            setSortOrder(e.target.value);
+            this.props.fetchArticles();
+          }}
         >
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
