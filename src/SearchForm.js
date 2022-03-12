@@ -3,48 +3,57 @@ import FilterFieldset from './FilterFieldset';
 
 class SearchForm extends React.Component {
   state = {
-    isMenuOpen: false
+    isMenuOpen: false,
   };
 
-  newsDesks = {
-    filterType: 'newsdesk',
-    legend: 'News desk',
-    labels: [
-      'Arts', 
-      'Business', 
-      'Culture', 
-      'Home & Garden', 
-      'Health & Fitness', 
-      'Fashion & Style', 
-      'Politics', 
-      'Science', 
-      'Sports', 
+  filters = {
+    newsDesks: [
+      'Arts',
+      'Business',
+      'Culture',
+      'Home & Garden',
+      'Health & Fitness',
+      'Fashion & Style',
+      'Politics',
+      'Science',
+      'Sports',
       'Travel'
-    ]
-  }
-
-  materialTypes = {
-    filterType: 'material',
-    legend: 'Material type',
-    labels: [
-      'News', 
-      'Interview', 
-      'Editorial', 
-      'Archives', 
+    ],
+    materialTypes: [
+      'News',
+      'Interview',
+      'Editorial',
+      'Archives',
       'Op-ed'
     ]
   }
 
   renderFiltersContainer = () => {
-   return (
-     <div id="filters-container">
-       <FilterFieldset options={this.newsDesks} />
-       <FilterFieldset options={this.materialTypes} />
-       <div>
-         <label htmlFor="location-search">Location:</label>
-         <input type="search" id="location-search" />
-       </div>
-     </div>
+    return (
+      <div id="filters-container">
+        <FilterFieldset
+          fieldsetName="News desks"
+          checkboxValues={this.filters.newsDesks}
+          activeFilterValues={this.props.newsDeskFilter}
+          setFilter={this.props.setNewsDeskFilter}
+        />
+        <FilterFieldset
+          fieldsetName="Material types"
+          checkboxValues={this.filters.materialTypes}
+          activeFilterValues={this.props.materialTypeFilter}
+          setFilter={this.props.setMaterialTypeFilter}
+        />
+        <div>
+          <label htmlFor="location-search">Location:</label>
+          <input 
+            type="search" 
+            id="location-search"
+            name="glocation"
+            value={this.props.glocationFilter}
+            onChange={e => this.props.setGlocationFilter(e.target.value)}
+          />
+        </div>
+      </div>
    );
   }
   
@@ -53,18 +62,49 @@ class SearchForm extends React.Component {
     const filtersContainer = isMenuOpen ? this.renderFiltersContainer() : null;
 
     return (
-      <form onSubmit={this.handleSearchSubmit}>
+      <form>
         <div id="search-controls-container">
           <div>
-            <input id="query-input" type="search" placeholder="Enter a search term" />
+            <input
+              type="search" 
+              id="query-input"
+              name="query" 
+              placeholder="Enter a search term"
+              value={this.props.searchQuery.query}
+              onChange={e => {
+                const searchQuery = {...this.props.searchQuery};
+                searchQuery.query = e.target.value;
+                this.props.setSearchQuery(searchQuery);
+              }}
+            />
           </div>
           <div>
             <label htmlFor="begin-date">Start:</label>
-            <input id="begin-date" type="date" />
+            <input 
+              type="date" 
+              id="begin-date" 
+              name="begin" 
+              value={this.props.searchQuery.beginDate} 
+              onChange={e => {
+                const searchQuery = {...this.props.searchQuery};
+                searchQuery.beginDate = e.target.value;
+                this.props.setSearchQuery(searchQuery);
+              }}
+            />
           </div>
           <div>
             <label htmlFor="end-date">End:</label>
-            <input id="end-date" type="date" />
+            <input 
+              type="date" 
+              id="end-date" 
+              name="end" 
+              value={this.props.searchQuery.endDate}
+              onChange={e => {
+                const searchQuery = {...this.props.searchQuery};
+                searchQuery.endDate = e.target.value;
+                this.props.setSearchQuery(searchQuery);
+              }} 
+            />
           </div>
           <button id="submit">Search</button>
         </div>
