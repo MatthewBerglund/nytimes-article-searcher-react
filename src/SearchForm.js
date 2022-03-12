@@ -62,7 +62,12 @@ class SearchForm extends React.Component {
     const filtersContainer = isMenuOpen ? this.renderFiltersContainer() : null;
 
     return (
-      <form>
+      <form onSubmit={e => {
+        e.preventDefault();
+        this.props.setSortOrder('relevance');
+        this.props.setPage(0);
+        this.props.fetchArticles();
+      }}>
         <div id="search-controls-container">
           <div>
             <input
