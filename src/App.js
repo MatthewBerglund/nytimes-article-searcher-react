@@ -7,12 +7,12 @@ import SearchResults from './SearchResults';
 function App() {
   const [searchQuery, setSearchQuery] = useState({
     query: '',
-    beginDate: null,
-    endDate: null
+    beginDate: '',
+    endDate: ''
   });
-  const [glocationFilter, setGlocationFilter] = useState('');
-  const [newsDeskFilter, setNewsDeskFilter] = useState([]);
-  const [materialTypeFilter, setMaterialTypeFilter] = useState([]);
+  const [glocation, setGlocation] = useState('');
+  const [newsDesks, setNewsDesks] = useState([]);
+  const [materialTypes, setMaterialTypes] = useState([]);
   const [sortOrder, setSortOrder] = useState('relevance');
   const [articles, setArticles] = useState({});
   const [page, setPage] = useState(0);
@@ -27,9 +27,36 @@ function App() {
     fullURL += searchQuery.endDate ? `&end_date=${searchQuery.endDate}` : '';
     fullURL += searchQuery.sortOrder ? `&sort=${searchQuery.sortOrder}` : '';
 
+    let activeFilters = getActiveFiltersForFetchURL();
+    fullURL += activeFilters.length > 0 ? `&fq=${activeFilters.join(' AND ')}` : '';
+
     const response = await fetch(fullURL);
     const fetchedArticles = await response.json();
     setArticles(fetchedArticles);
+  }
+
+  const getActiveFiltersForFetchURL = () => {
+    let filters = [];
+
+    if (newsDesks.length > 0) {
+      let values = newsDesks.map(value => `"${value}"`);
+      let encodedValues = encodeURIComponent(values.join(' '));
+      filters.push(`news_desk:(${encodedValues})`);
+    }
+
+    if (materialTypes.length > 0) {
+      let values = materialTypes.map(value => `"${value}"`);
+      let encodedValues = encodeURIComponent(values.join(' '));
+      filters.push(`type_of_material:(${encodedValues})`);
+    }
+
+    if (glocation) {
+      let value = `"${glocation}"`;
+      let encodedValue = encodeURIComponent(value);
+      filters.push(`glocations.contains:(${encodedValue})`);
+    }
+
+    return filters;
   }
 
   return (
@@ -41,12 +68,12 @@ function App() {
         <SearchForm
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
-          glocationFilter={glocationFilter}
-          setGlocationFilter={setGlocationFilter}
-          newsDeskFilter={newsDeskFilter}
-          setNewsDeskFilter={setNewsDeskFilter}
-          materialTypeFilter={materialTypeFilter}
-          setMaterialTypeFilter={setMaterialTypeFilter}
+          glocation={glocation}
+          setGlocation={setGlocation}
+          newsDesks={newsDesks}
+          setNewsDesks={setNewsDesks}
+          materialTypes={materialTypes}
+          setMaterialTypes={setMaterialTypes}
           setSortOrder={setSortOrder}
           setPage={setPage}
           fetchArticles={fetchArticles}

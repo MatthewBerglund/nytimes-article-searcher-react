@@ -34,14 +34,14 @@ class SearchForm extends React.Component {
         <FilterFieldset
           fieldsetName="News desks"
           checkboxValues={this.filters.newsDesks}
-          activeFilterValues={this.props.newsDeskFilter}
-          setFilter={this.props.setNewsDeskFilter}
+          activeFilterValues={this.props.newsDesks}
+          setFilter={this.props.setNewsDesks}
         />
         <FilterFieldset
           fieldsetName="Material types"
           checkboxValues={this.filters.materialTypes}
-          activeFilterValues={this.props.materialTypeFilter}
-          setFilter={this.props.setMaterialTypeFilter}
+          activeFilterValues={this.props.materialTypes}
+          setFilter={this.props.setMaterialTypes}
         />
         <div>
           <label htmlFor="location-search">Location:</label>
@@ -49,8 +49,8 @@ class SearchForm extends React.Component {
             type="search" 
             id="location-search"
             name="glocation"
-            value={this.props.glocationFilter}
-            onChange={e => this.props.setGlocationFilter(e.target.value)}
+            value={this.props.glocation}
+            onChange={e => this.props.setGlocation(e.target.value)}
           />
         </div>
       </div>
