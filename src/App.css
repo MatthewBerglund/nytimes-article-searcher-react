@@ -157,7 +157,7 @@ fieldset {
   justify-content: center;
   margin-bottom: 20px;
   position: fixed;
-  top: 50vh;
+  top: 60vh;
 }
 
 #loading-msg p {

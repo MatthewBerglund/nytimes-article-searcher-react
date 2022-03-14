@@ -56,6 +56,14 @@ class SearchForm extends React.Component {
       </div>
    );
   }
+
+  renderLoadingMessage = () => {
+    return (
+      <div id="loading-msg">
+        <p>Loading...</p>
+      </div>
+    );
+  }
   
   render() {
     const isMenuOpen = this.state.isMenuOpen;
