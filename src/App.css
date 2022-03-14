@@ -153,10 +153,17 @@ fieldset {
 /* Loading message */
 
 #loading-msg {
-  font-size: 18px;
-  font-weight: bold;
+  display: flex;
+  justify-content: center;
   margin-bottom: 20px;
-  text-align: center;
+  position: fixed;
+  top: 50vh;
+}
+
+#loading-msg p {
+  font-size: 22px;
+  font-weight: bold;
+  position: absolute;
 }
 
 /* Meta info (total hits) */
@@ -224,13 +231,10 @@ span {
 }
 
 .article-img {
-  background: #0061bb;
   grid-area: image;
-  height: 225px;
   justify-self: flex-end;
   margin-left: 30px;
   max-height: 150px;
-  width: 225px;
 }
 
 .article-abstract {
@@ -267,6 +271,10 @@ span {
   align-items: center;
   display: flex;
   flex-direction: column;
+}
+
+.loading {
+  opacity: 0.25;
 }
 
 /* Page bottom intersection */
