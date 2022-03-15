@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './App.css';
 import SearchForm from './SearchForm';
 import SearchSort from './SearchSort';
@@ -17,16 +17,47 @@ function App() {
   const [articles, setArticles] = useState(null);
   const [totalHits, setTotalHits] = useState(0);
   const [page, setPage] = useState(0);
-  const [isSearching, setIsSearching] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   
-  const searchComplete = articles ? true : false;
-  const foundArticles = searchComplete && totalHits > 0;
+  const isMounted = useRef(false);
 
+  // If page changes, submit search
+  // Do nothing on initial render
   useEffect(() => {
-    if (isSearching === true) {
-      fetchArticles().then(() => setIsSearching(false));
+    if (isMounted.current) {
+      fetchArticles();
+    }
+  }, [page]);
+  
+  // If `sortOrder` changes, either set page back to 0 or submit search
+  // Do nothing on initial render
+  useEffect(() => {
+    if (isMounted.current) {
+      if (page !== 0) {
+        setPage(0)
+      } else {
+        fetchArticles();
+      }
+    }
+  }, [sortOrder]);
+
+  // On initial render, set `isMounted` equal to true
+  useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true;
     }
   });
+
+  // When SEARCH button is clicked, either reset `sortOrder` or `page`, or submit a search
+  const submitNewSearch = () => {
+    if (sortOrder !== 'relevance') {
+      setSortOrder('relevance');
+    } else if (page !== 0) {
+      setPage(0);
+    } else {
+      fetchArticles();
+    }
+  }
 
   const fetchArticles = async () => {
     const baseURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
@@ -40,10 +71,12 @@ function App() {
     let activeFilters = getActiveFiltersForFetchURL();
     fullURL += activeFilters.length > 0 ? `&fq=${activeFilters.join(' AND ')}` : '';
 
+    setIsFetching(true);
     const response = await fetch(fullURL);
     const searchResults = await response.json();
     setArticles(searchResults.response.docs);
     setTotalHits(searchResults.response.meta.hits);
+    setIsFetching(false);
   }
 
   // Encode all active filter fields and values and return them 
@@ -85,10 +118,6 @@ function App() {
       <SearchSort
         sortOrder={sortOrder}
         setSortOrder={setSortOrder}
-        fetchArticles={fetchArticles}
-        isSearching={isSearching}
-        setIsSearching={setIsSearching}
-        setPage={setPage}
       />
     );
   }
@@ -104,12 +133,15 @@ function App() {
   const renderSearchResults = () => {
     return (
       <SearchResults
-        isSearching={isSearching}
+        isFetching={isFetching}
         articles={articles}
         fetchArticles={fetchArticles}
       />
     );
   }
+
+  const searchComplete = articles ? true : false;
+  const foundArticles = searchComplete && totalHits > 0;
 
   return (
     <div>
@@ -126,15 +158,11 @@ function App() {
           setNewsDesks={setNewsDesks}
           materialTypes={materialTypes}
           setMaterialTypes={setMaterialTypes}
-          setSortOrder={setSortOrder}
-          setPage={setPage}
-          fetchArticles={fetchArticles}
-          isSearching={isSearching}
-          setIsSearching={setIsSearching}
+          submitNewSearch={submitNewSearch}
         />
         {searchComplete ? renderTotalHits() : null}
         {foundArticles ? renderSearchSort() : null}
-        {isSearching ? renderLoadingMessage() : null}
+        {isFetching ? renderLoadingMessage() : null}
         {foundArticles ? renderSearchResults() : null}
       </main>
     </div>

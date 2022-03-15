@@ -114,11 +114,11 @@ class SearchForm extends React.Component {
               }} 
             />
           </div>
-          <button type="button" id="submit" onClick={() => {
-            this.props.setSortOrder('relevance');
-            this.props.setPage(0);
-            this.props.setIsSearching(true);
-          }}>
+          <button 
+            type="button" 
+            id="submit" 
+            onClick={() => this.props.submitNewSearch()}
+          >
             Search
           </button>
         </div>
