@@ -16,7 +16,7 @@ function App() {
   const [sortOrder, setSortOrder] = useState('relevance');
   const [articles, setArticles] = useState(null);
   const [totalHits, setTotalHits] = useState(0);
-  const [page, setPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [isFetching, setIsFetching] = useState(false);
   
   const isMounted = useRef(false);
@@ -27,14 +27,14 @@ function App() {
     if (isMounted.current) {
       fetchArticles();
     }
-  }, [page]);
+  }, [currentPage]);
   
   // If `sortOrder` changes, either set page back to 0 or submit search
   // Do nothing on initial render
   useEffect(() => {
     if (isMounted.current) {
-      if (page !== 0) {
-        setPage(0)
+      if (currentPage !== 0) {
+        setCurrentPage(0)
       } else {
         fetchArticles();
       }
@@ -52,8 +52,8 @@ function App() {
   const submitNewSearch = () => {
     if (sortOrder !== 'relevance') {
       setSortOrder('relevance');
-    } else if (page !== 0) {
-      setPage(0);
+    } else if (currentPage !== 0) {
+      setCurrentPage(0);
     } else {
       fetchArticles();
     }
@@ -62,7 +62,7 @@ function App() {
   const fetchArticles = async () => {
     const baseURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
     const key = 'brtQ9fXA0I1ATPctklZe6RcanXZRklYl';
-    let fullURL = `${baseURL}?api-key=${key}&page=${page}&sort=${sortOrder}`;
+    let fullURL = `${baseURL}?api-key=${key}&page=${currentPage}&sort=${sortOrder}`;
 
     fullURL += searchQuery.query ? `&q=${searchQuery.query}` : '';
     fullURL += searchQuery.beginDate ? `&begin_date=${searchQuery.beginDate}` : '';
