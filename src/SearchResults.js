@@ -9,6 +9,7 @@ class SearchResults extends React.Component {
           <Article 
             key={article['_id']}
             article={article}
+            performKeywordSearch={this.props.performKeywordSearch}
           />
         )}
       </ul>

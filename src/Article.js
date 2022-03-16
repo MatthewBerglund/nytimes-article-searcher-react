@@ -16,7 +16,10 @@ class Article extends React.Component {
           </a>
           <ArticleAbstract abstract={article.abstract} />
           <ArticleThumbnail thumbnail={article.multimedia.find(image => image.subtype === 'blog225')} />
-          <KeywordList keywords={article.keywords} />
+          <KeywordList 
+            keywords={article.keywords}
+            performKeywordSearch={this.props.performKeywordSearch}
+          />
           {/* <ul className="keywords"></ul> */}
         </article>
       </li>

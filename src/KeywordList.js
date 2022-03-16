@@ -10,6 +10,7 @@ function KeywordList(props) {
             <Keyword 
               key={index}
               keyword={keyword}
+              performKeywordSearch={props.performKeywordSearch}
             />
           );
         })}

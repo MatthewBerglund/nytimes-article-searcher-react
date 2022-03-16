@@ -56,8 +56,20 @@ function App() {
     } else if (currentPage !== 0) {
       setCurrentPage(0);
     } else {
-      fetchArticles();
+      fetchArticles().then(() => {
+        window.scroll(0, 0);
+      })
     }
+  }
+
+  const performKeywordSearch = keyword => {
+    const searchQuery = {
+      query: keyword,
+      beginDate: '',
+      endDate: ''
+    };
+    setSearchQuery(searchQuery);
+    submitNewSearch();
   }
 
   const fetchArticles = async () => {
@@ -128,7 +140,7 @@ function App() {
       <SearchResults
         isFetching={isFetching}
         articles={articles}
-        fetchArticles={fetchArticles}
+        performKeywordSearch={performKeywordSearch}
       />
     );
   }
