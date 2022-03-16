@@ -6,7 +6,7 @@ class Article extends React.Component {
     return (
       <li>
         <article>
-          <a target="_blank" className="headline-link">
+          <a href={this.props.article['web_url']} target="_blank" className="headline-link">
             <h2>{this.props.article.headline.main}</h2>
           </a>
           <p className="article-abstract">{this.props.article['pub_date']}</p>
