@@ -4,6 +4,7 @@ import SearchForm from './SearchForm';
 import SearchSort from './SearchSort';
 import SearchResults from './SearchResults';
 import LoadingMessage from './LoadingMessage';
+import PlaceholderArticle from './PlaceholderArticle';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState({
@@ -87,7 +88,17 @@ function App() {
     setIsFetching(true);
     const response = await fetch(fullURL);
     const searchResults = await response.json();
-    setArticles(searchResults.response.docs);
+    const newArticles = searchResults.response.docs;
+    
+    // If fetching for infinite scrolling, concat new articles to existing ones, 
+    // otherwise replace existing articles
+    if (currentPage > 0) {
+      const prevArticles = articles.slice(0);
+      setArticles(prevArticles.concat(newArticles));
+    } else {
+      setArticles(newArticles);
+    }
+    
     setTotalHits(searchResults.response.meta.hits);
     setIsFetching(false);
   }
@@ -169,6 +180,7 @@ function App() {
         {foundArticles ? renderSearchSort() : null}
         <LoadingMessage isFetching={isFetching} />
         {foundArticles ? renderSearchResults() : null}
+        <PlaceholderArticle totalHits={totalHits} currentPage={currentPage} />
       </main>
     </div>
   );
