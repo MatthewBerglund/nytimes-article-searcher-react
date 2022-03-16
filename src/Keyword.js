@@ -1,13 +1,11 @@
 import React from "react";
 
-class Keyword extends React.Component {
-  render() {
-    return(
-      <li>
-        <a className="keyword" tabIndex="0">Keyword</a>
-      </li>
-    );
-  }
+function Keyword(props) {
+  return (
+    <li className="keyword" tabIndex="0">
+      <a>{props.keyword.value}</a>
+    </li>
+  );
 }
 
 export default Keyword;
