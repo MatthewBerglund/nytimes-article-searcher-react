@@ -72,6 +72,8 @@ function App() {
   }
 
   const fetchArticles = async () => {
+    setIsFetching(currentPage === 0);
+    
     const baseURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
     const key = 'brtQ9fXA0I1ATPctklZe6RcanXZRklYl';
     let fullURL = `${baseURL}?api-key=${key}&page=${currentPage}&sort=${sortOrder}`;
@@ -82,8 +84,7 @@ function App() {
 
     let activeFilters = getActiveFiltersForFetchURL();
     fullURL += activeFilters.length > 0 ? `&fq=${activeFilters.join(' AND ')}` : '';
-
-    setIsFetching(true);
+    
     const response = await fetch(fullURL);
     const searchResults = await response.json();
     const newArticles = searchResults.response.docs;
