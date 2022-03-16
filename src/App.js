@@ -3,6 +3,7 @@ import './App.css';
 import SearchForm from './SearchForm';
 import SearchSort from './SearchSort';
 import SearchResults from './SearchResults';
+import LoadingMessage from './LoadingMessage';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState({
@@ -105,14 +106,6 @@ function App() {
     return filters;
   }
 
-  const renderLoadingMessage = () => {
-    return (
-      <div id="loading-msg">
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
   const renderSearchSort = () => {
     return (
       <SearchSort
@@ -162,7 +155,7 @@ function App() {
         />
         {searchComplete ? renderTotalHits() : null}
         {foundArticles ? renderSearchSort() : null}
-        {isFetching ? renderLoadingMessage() : null}
+        <LoadingMessage isFetching={isFetching} />
         {foundArticles ? renderSearchResults() : null}
       </main>
     </div>
