@@ -57,9 +57,7 @@ function App() {
     } else if (currentPage !== 0) {
       setCurrentPage(0);
     } else {
-      fetchArticles().then(() => {
-        window.scroll(0, 0);
-      })
+      fetchArticles();
     }
   }
 
@@ -97,6 +95,7 @@ function App() {
       setArticles(prevArticles.concat(newArticles));
     } else {
       setArticles(newArticles);
+      window.scroll(0, 0);
     }
     
     setTotalHits(searchResults.response.meta.hits);
@@ -180,7 +179,11 @@ function App() {
         {foundArticles ? renderSearchSort() : null}
         <LoadingMessage isFetching={isFetching} />
         {foundArticles ? renderSearchResults() : null}
-        <PlaceholderArticle totalHits={totalHits} currentPage={currentPage} />
+        <PlaceholderArticle 
+          totalHits={totalHits} 
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </main>
     </div>
   );
