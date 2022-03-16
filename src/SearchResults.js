@@ -4,12 +4,13 @@ import Article from './Article';
 class SearchResults extends React.Component {
   render() {
     return (
-      <ul id="articles-container">
-        <Article />
-        <Article />
-        <Article />
-        <Article />
-        <Article />
+      <ul id="articles-container" className={this.props.isFetching ? 'loading' : ''}>
+        {this.props.articles.map(article => 
+          <Article 
+            key={article['_id']}
+            article={article}
+          />
+        )}
       </ul>
     );
   }

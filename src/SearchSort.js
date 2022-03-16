@@ -2,16 +2,14 @@ import React from "react";
 
 class SearchSort extends React.Component {
   render() {
-    const {sortOrder, setSortOrder} = this.props;
-
     return (
       <div id="sort-order-container">
         <label htmlFor="sort-order-select">Sort by:</label>
         <select 
           name="sortOrder" 
           id="sort-order-select" 
-          value={sortOrder}
-          onChange={e => setSortOrder(e.target.value)}
+          value={this.props.sortOrder}
+          onChange={e => this.props.setSortOrder(e.target.value)}
         >
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>

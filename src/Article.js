@@ -7,15 +7,11 @@ class Article extends React.Component {
       <li>
         <article>
           <a target="_blank" className="headline-link">
-            <h2>This is a very very serious issue</h2>
+            <h2>{this.props.article.headline.main}</h2>
           </a>
-          <p className="article-abstract">Several sources have said that the issue is actually even more very very serious than originally thought.</p>
+          <p className="article-abstract">{this.props.article['pub_date']}</p>
           <img className="article-img" />
-          <ul className="keywords">
-            <Keyword />
-            <Keyword />
-            <Keyword />
-          </ul>
+          <ul className="keywords"></ul>
         </article>
       </li>
     );
