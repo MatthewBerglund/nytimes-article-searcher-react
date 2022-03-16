@@ -72,6 +72,7 @@ function App() {
   }
 
   const fetchArticles = async () => {
+    // Do not indicate fetching if currentPage has been incremented (pagination)
     setIsFetching(currentPage === 0);
     
     const baseURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
