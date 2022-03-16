@@ -34,14 +34,14 @@ class SearchForm extends React.Component {
         <FilterFieldset
           fieldsetName="News desks"
           checkboxValues={this.filters.newsDesks}
-          activeFilterValues={this.props.newsDeskFilter}
-          setFilter={this.props.setNewsDeskFilter}
+          activeFilterValues={this.props.newsDesks}
+          setFilter={this.props.setNewsDesks}
         />
         <FilterFieldset
           fieldsetName="Material types"
           checkboxValues={this.filters.materialTypes}
-          activeFilterValues={this.props.materialTypeFilter}
-          setFilter={this.props.setMaterialTypeFilter}
+          activeFilterValues={this.props.materialTypes}
+          setFilter={this.props.setMaterialTypes}
         />
         <div>
           <label htmlFor="location-search">Location:</label>
@@ -49,12 +49,20 @@ class SearchForm extends React.Component {
             type="search" 
             id="location-search"
             name="glocation"
-            value={this.props.glocationFilter}
-            onChange={e => this.props.setGlocationFilter(e.target.value)}
+            value={this.props.glocation}
+            onChange={e => this.props.setGlocation(e.target.value)}
           />
         </div>
       </div>
    );
+  }
+
+  renderLoadingMessage = () => {
+    return (
+      <div id="loading-msg">
+        <p>Loading...</p>
+      </div>
+    );
   }
   
   render() {
@@ -106,13 +114,19 @@ class SearchForm extends React.Component {
               }} 
             />
           </div>
-          <button id="submit">Search</button>
+          <button type="button" id="submit" onClick={() => {
+            this.props.setSortOrder('relevance');
+            this.props.setPage(0);
+            this.props.setIsSearching(true);
+          }}>
+            Search
+          </button>
         </div>
         {filtersContainer}
-        <button 
+        <button
+          type="button"
           id="filters-button"  
-          onClick={event => {
-            event.preventDefault();
+          onClick={() => {
             const isMenuOpen = this.state.isMenuOpen;
             this.setState({
               isMenuOpen: !isMenuOpen
