@@ -26,22 +26,27 @@ class SearchForm extends React.Component {
       'Archives',
       'Op-ed'
     ]
-  }
+  };
 
   renderFiltersContainer = () => {
+    const {urlSearchParams, setUrlSearchParams} = this.props;
+    const searchParams = Object.fromEntries([...urlSearchParams]);
+
     return (
       <div id="filters-container">
         <FilterFieldset
           fieldsetName="News desks"
+          filter="newsDesks"
           checkboxValues={this.filters.newsDesks}
-          activeFilterValues={this.props.newsDesks}
-          setFilter={this.props.setNewsDesks}
+          urlSearchParams={urlSearchParams}
+          setUrlSearchParams={setUrlSearchParams}
         />
         <FilterFieldset
           fieldsetName="Material types"
+          filter="materialTypes"
           checkboxValues={this.filters.materialTypes}
-          activeFilterValues={this.props.materialTypes}
-          setFilter={this.props.setMaterialTypes}
+          urlSearchParams={urlSearchParams}
+          setUrlSearchParams={setUrlSearchParams}
         />
         <div>
           <label htmlFor="location-search">Location:</label>
@@ -49,40 +54,45 @@ class SearchForm extends React.Component {
             type="search" 
             id="location-search"
             name="glocation"
-            value={this.props.glocation}
-            onChange={e => this.props.setGlocation(e.target.value)}
+            value={searchParams.glocation || ''}
+            onChange={e => {
+              const glocation = e.target.value;
+              if (glocation) {
+                searchParams.glocation = glocation;
+              } else {
+                delete searchParams.glocation;
+              }
+              setUrlSearchParams(searchParams);
+            }}
           />
         </div>
       </div>
    );
   }
-
-  renderLoadingMessage = () => {
-    return (
-      <div id="loading-msg">
-        <p>Loading...</p>
-      </div>
-    );
-  }
   
   render() {
     const isMenuOpen = this.state.isMenuOpen;
     const filtersContainer = isMenuOpen ? this.renderFiltersContainer() : null;
-
+    const {urlSearchParams, setUrlSearchParams} = this.props;
+    const searchParams = Object.fromEntries([...urlSearchParams]);
+    
     return (
       <form>
         <div id="search-controls-container">
           <div>
             <input
               type="search" 
-              id="query-input"
-              name="query" 
+              id="query-input" 
               placeholder="Enter a search term"
-              value={this.props.searchQuery.query}
+              value={searchParams.query || ''}
               onChange={e => {
-                const searchQuery = {...this.props.searchQuery};
-                searchQuery.query = e.target.value;
-                this.props.setSearchQuery(searchQuery);
+                const query = e.target.value;
+                if (query) {
+                  searchParams.query = query;
+                } else {
+                  delete searchParams.query;
+                }
+                setUrlSearchParams(searchParams);
               }}
             />
           </div>
@@ -90,13 +100,16 @@ class SearchForm extends React.Component {
             <label htmlFor="begin-date">Start:</label>
             <input 
               type="date" 
-              id="begin-date" 
-              name="begin" 
-              value={this.props.searchQuery.beginDate} 
+              id="begin-date"  
+              value={searchParams.begin_date || ''}
               onChange={e => {
-                const searchQuery = {...this.props.searchQuery};
-                searchQuery.beginDate = e.target.value;
-                this.props.setSearchQuery(searchQuery);
+                let date = e.target.value;
+                if (date) {
+                  searchParams.begin_date = date;
+                } else {
+                  delete searchParams.begin_date;
+                }
+                setUrlSearchParams(searchParams);
               }}
             />
           </div>
@@ -104,14 +117,17 @@ class SearchForm extends React.Component {
             <label htmlFor="end-date">End:</label>
             <input 
               type="date" 
-              id="end-date" 
-              name="end" 
-              value={this.props.searchQuery.endDate}
+              id="end-date"  
+              value={searchParams.end_date || ''}
               onChange={e => {
-                const searchQuery = {...this.props.searchQuery};
-                searchQuery.endDate = e.target.value;
-                this.props.setSearchQuery(searchQuery);
-              }} 
+                let date = e.target.value;
+                if (date) {
+                  searchParams.end_date = date;
+                } else {
+                  delete searchParams.end_date;
+                }
+                setUrlSearchParams(searchParams);
+              }}
             />
           </div>
           <button 

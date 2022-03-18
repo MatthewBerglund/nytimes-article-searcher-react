@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import './App.css';
 import SearchForm from './SearchForm';
 import SearchSort from './SearchSort';
@@ -7,23 +8,15 @@ import LoadingMessage from './LoadingMessage';
 import PlaceholderArticle from './PlaceholderArticle';
 
 function App() {
-  const [searchQuery, setSearchQuery] = useState({
-    query: '',
-    beginDate: '',
-    endDate: ''
-  });
-  const [glocation, setGlocation] = useState('');
-  const [newsDesks, setNewsDesks] = useState([]);
-  const [materialTypes, setMaterialTypes] = useState([]);
-  const [sortOrder, setSortOrder] = useState('relevance');
+  const [urlSearchParams, setUrlSearchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(0);
   const [articles, setArticles] = useState(null);
   const [totalHits, setTotalHits] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
   const [isFetching, setIsFetching] = useState(false);
-  
   const isMounted = useRef(false);
+  const sortOrder = urlSearchParams.get('sort');
 
-  // If page changes, submit search
+  // If `currentPage` changes, submit search
   // Do nothing on initial render
   useEffect(() => {
     if (isMounted.current) {
@@ -31,7 +24,7 @@ function App() {
     }
   }, [currentPage]);
   
-  // If `sortOrder` changes, either set page back to 0 or submit search
+  // If `sortOrder` changes, either reset currentPage to 0 or submit search
   // Do nothing on initial render
   useEffect(() => {
     if (isMounted.current) {
@@ -43,17 +36,24 @@ function App() {
     }
   }, [sortOrder]);
 
-  // On initial render, set `isMounted` equal to true
+  // On initial render: 
+  // Perform a search if there are search params, set `isMounted` equal to true
   useEffect(() => {
     if (!isMounted.current) {
+      const searchParams = Object.fromEntries([...urlSearchParams]);
+      if (searchParams) {
+        submitNewSearch();
+      }
       isMounted.current = true;
     }
   });
 
-  // When SEARCH button is clicked, either reset `sortOrder` or `page`, or submit a search
+  // When SEARCH button is clicked, either reset `sort` or `currentPage`, or submit a search
   const submitNewSearch = () => {
-    if (sortOrder !== 'relevance') {
-      setSortOrder('relevance');
+    const searchParams = Object.fromEntries([...urlSearchParams]);
+    if (searchParams.sort !== 'relevance') {
+      searchParams.sort = 'relevance';
+      setUrlSearchParams(searchParams);
     } else if (currentPage !== 0) {
       setCurrentPage(0);
     } else {
@@ -62,26 +62,26 @@ function App() {
   }
 
   const performKeywordSearch = keyword => {
-    const searchQuery = {
+    setUrlSearchParams({
       query: keyword,
-      beginDate: '',
-      endDate: ''
-    };
-    setSearchQuery(searchQuery);
+      sort: 'relevance'
+    });
     submitNewSearch();
   }
 
   const fetchArticles = async () => {
-    // Do not indicate fetching (loading...) if currentPage has been incremented (pagination)
+    // Do not indicate fetching/loading if currentPage has been incremented (pagination)
     setIsFetching(currentPage === 0);
-    
+
+    const searchParams = Object.fromEntries([...urlSearchParams]);
+    const {query, begin_date, end_date, sort} = searchParams;
     const baseURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
     const key = 'brtQ9fXA0I1ATPctklZe6RcanXZRklYl';
-    let fullURL = `${baseURL}?api-key=${key}&page=${currentPage}&sort=${sortOrder}`;
+    let fullURL = `${baseURL}?api-key=${key}&page=${currentPage}&sort=${sort}`;
 
-    fullURL += searchQuery.query ? `&q=${searchQuery.query}` : '';
-    fullURL += searchQuery.beginDate ? `&begin_date=${searchQuery.beginDate}` : '';
-    fullURL += searchQuery.endDate ? `&end_date=${searchQuery.endDate}` : '';
+    fullURL += query ? `&q=${query}` : '';
+    fullURL += begin_date ? `&begin_date=${begin_date}` : '';
+    fullURL += end_date ? `&end_date=${end_date}` : '';
 
     let activeFilters = getActiveFiltersForFetchURL();
     fullURL += activeFilters.length > 0 ? `&fq=${activeFilters.join(' AND ')}` : '';
@@ -107,15 +107,19 @@ function App() {
   // Encode all active filter fields and values and return them 
   // in an array for insertion into the API fetch URL
   const getActiveFiltersForFetchURL = () => {
+    const searchParams = Object.fromEntries([...urlSearchParams]);
+    let {glocation, newsDesks, materialTypes} = searchParams;
     let filters = [];
 
-    if (newsDesks.length > 0) {
+    if (newsDesks) {
+      newsDesks = newsDesks.split(',');
       let values = newsDesks.map(value => `"${value}"`);
       let encodedValues = encodeURIComponent(values.join(' '));
       filters.push(`news_desk:(${encodedValues})`);
     }
 
-    if (materialTypes.length > 0) {
+    if (materialTypes) {
+      materialTypes = materialTypes.split(',');
       let values = materialTypes.map(value => `"${value}"`);
       let encodedValues = encodeURIComponent(values.join(' '));
       filters.push(`type_of_material:(${encodedValues})`);
@@ -133,8 +137,8 @@ function App() {
   const renderSearchSort = () => {
     return (
       <SearchSort
-        sortOrder={sortOrder}
-        setSortOrder={setSortOrder}
+        urlSearchParams={urlSearchParams}
+        setUrlSearchParams={setUrlSearchParams}
       />
     );
   }
@@ -167,14 +171,8 @@ function App() {
       </header>
       <main>
         <SearchForm
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          glocation={glocation}
-          setGlocation={setGlocation}
-          newsDesks={newsDesks}
-          setNewsDesks={setNewsDesks}
-          materialTypes={materialTypes}
-          setMaterialTypes={setMaterialTypes}
+          urlSearchParams={urlSearchParams}
+          setUrlSearchParams={setUrlSearchParams}
           submitNewSearch={submitNewSearch}
         />
         {searchComplete ? renderTotalHits() : null}
