@@ -40,8 +40,8 @@ function App() {
   // Perform a search if there are search params, set `isMounted` equal to true
   useEffect(() => {
     if (!isMounted.current) {
-      const searchParams = Object.fromEntries([...urlSearchParams]);
-      if (searchParams) {
+      const searchParams = [...urlSearchParams];
+      if (searchParams.length > 0) {
         submitNewSearch();
       }
       isMounted.current = true;
