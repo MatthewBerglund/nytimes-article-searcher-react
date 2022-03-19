@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { createRef } from 'react';
+import { getValuesFromFieldset } from './helpers';
 import FilterFieldset from './FilterFieldset';
 
 class SearchForm extends React.Component {
   state = {
     isMenuOpen: false,
   };
+
+  query = createRef();
+  beginDate = createRef();
+  endDate = createRef();
+  glocation = createRef();
+  newsDesks = createRef();
+  materialTypes = createRef();
+
+  componentDidUpdate() {
+    let query = this.props.urlSearchParams.get('query');
+    this.query.current.value = query ? query : '';
+  }
 
   filters = {
     newsDesks: [
@@ -28,52 +41,43 @@ class SearchForm extends React.Component {
     ]
   };
 
-  renderFiltersContainer = () => {
-    const {urlSearchParams, setUrlSearchParams} = this.props;
-    const searchParams = Object.fromEntries([...urlSearchParams]);
+  submitNewSearch = () => {
+    const searchParams = {}
+    searchParams.sort = 'relevance';
 
-    return (
-      <div id="filters-container">
-        <FilterFieldset
-          fieldsetName="News desks"
-          filter="newsDesks"
-          checkboxValues={this.filters.newsDesks}
-          urlSearchParams={urlSearchParams}
-          setUrlSearchParams={setUrlSearchParams}
-        />
-        <FilterFieldset
-          fieldsetName="Material types"
-          filter="materialTypes"
-          checkboxValues={this.filters.materialTypes}
-          urlSearchParams={urlSearchParams}
-          setUrlSearchParams={setUrlSearchParams}
-        />
-        <div>
-          <label htmlFor="location-search">Location:</label>
-          <input 
-            type="search" 
-            id="location-search"
-            name="glocation"
-            value={searchParams.glocation || ''}
-            onChange={e => {
-              const glocation = e.target.value;
-              if (glocation) {
-                searchParams.glocation = glocation;
-              } else {
-                delete searchParams.glocation;
-              }
-              setUrlSearchParams(searchParams);
-            }}
-          />
-        </div>
-      </div>
-   );
+    if (this.query.current.value) {
+      searchParams.query = this.query.current.value;
+    }
+
+    if (this.beginDate.current.value) {
+      searchParams.begin_date = this.beginDate.current.value;
+    }
+
+    if (this.endDate.current.value) {
+      searchParams.end_date = this.endDate.current.value;
+    }
+
+    if (this.glocation.current.value) {
+      searchParams.glocation = this.glocation.current.value;
+    }
+
+    const newsDeskValues = getValuesFromFieldset(this.newsDesks.current);
+    if (newsDeskValues.length > 0) {
+      searchParams.newsDesks = newsDeskValues.join(',');
+    }
+
+    const materialTypeValues = getValuesFromFieldset(this.materialTypes.current);
+    if (materialTypeValues.length > 0) {
+      searchParams.materialTypes = materialTypeValues.join(',');
+    }
+
+    this.props.setCurrentPage(0);
+    this.props.setUrlSearchParams(searchParams);
   }
   
   render() {
     const isMenuOpen = this.state.isMenuOpen;
-    const filtersContainer = isMenuOpen ? this.renderFiltersContainer() : null;
-    const {urlSearchParams, setUrlSearchParams} = this.props;
+    const urlSearchParams = this.props.urlSearchParams;
     const searchParams = Object.fromEntries([...urlSearchParams]);
     
     return (
@@ -82,63 +86,61 @@ class SearchForm extends React.Component {
           <div>
             <input
               type="search" 
-              id="query-input" 
+              id="query-input"
+              ref={this.query}
               placeholder="Enter a search term"
-              value={searchParams.query || ''}
-              onChange={e => {
-                const query = e.target.value;
-                if (query) {
-                  searchParams.query = query;
-                } else {
-                  delete searchParams.query;
-                }
-                setUrlSearchParams(searchParams);
-              }}
+              defaultValue={searchParams.query || ''}
             />
           </div>
           <div>
             <label htmlFor="begin-date">Start:</label>
             <input 
               type="date" 
-              id="begin-date"  
-              value={searchParams.begin_date || ''}
-              onChange={e => {
-                let date = e.target.value;
-                if (date) {
-                  searchParams.begin_date = date;
-                } else {
-                  delete searchParams.begin_date;
-                }
-                setUrlSearchParams(searchParams);
-              }}
+              id="begin-date"
+              ref={this.beginDate}
+              defaultValue={searchParams.begin_date || ''}
             />
           </div>
           <div>
             <label htmlFor="end-date">End:</label>
             <input 
               type="date" 
-              id="end-date"  
-              value={searchParams.end_date || ''}
-              onChange={e => {
-                let date = e.target.value;
-                if (date) {
-                  searchParams.end_date = date;
-                } else {
-                  delete searchParams.end_date;
-                }
-                setUrlSearchParams(searchParams);
-              }}
+              id="end-date"
+              ref={this.endDate} 
+              defaultValue={searchParams.end_date || ''}
             />
           </div>
           <button 
             type="button" 
             id="submit" 
-            onClick={() => this.props.submitNewSearch()}
+            onClick={this.submitNewSearch}
           >
             Search
           </button>
         </div>
-        {filtersContainer}
+        <div id="filters-container" className={isMenuOpen ? 'open' : ''}>
+          <FilterFieldset
+            fieldsetName="News desks"
+            filter="newsDesks"
+            checkboxValues={this.filters.newsDesks}
+            reference={this.newsDesks}
+          />
+          <FilterFieldset
+            fieldsetName="Material types"
+            filter="materialTypes"
+            checkboxValues={this.filters.materialTypes}
+            reference={this.materialTypes}
+          />
+          <div>
+            <label htmlFor="location-search">Location:</label>
+            <input
+              type="search"
+              id="location-search"
+              ref={this.glocation}
+              defaultValue={searchParams.glocation || ''}
+            />
+          </div>
+        </div>
         <button
           type="button"
           id="filters-button"  

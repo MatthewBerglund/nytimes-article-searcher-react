@@ -14,27 +14,14 @@ function App() {
   const [totalHits, setTotalHits] = useState(0);
   const [isFetching, setIsFetching] = useState(false);
   const isMounted = useRef(false);
-  const sortOrder = urlSearchParams.get('sort');
-
-  // If `currentPage` changes, submit search
+  
+  // If search params change, perform a search
   // Do nothing on initial render
   useEffect(() => {
     if (isMounted.current) {
       fetchArticles();
     }
-  }, [currentPage]);
-  
-  // If `sortOrder` changes, either reset currentPage to 0 or submit search
-  // Do nothing on initial render
-  useEffect(() => {
-    if (isMounted.current) {
-      if (currentPage !== 0) {
-        setCurrentPage(0)
-      } else {
-        fetchArticles();
-      }
-    }
-  }, [sortOrder]);
+  }, [urlSearchParams, currentPage]);
 
   // On initial render: 
   // Perform a search if there are search params, set `isMounted` equal to true
@@ -42,35 +29,14 @@ function App() {
     if (!isMounted.current) {
       const searchParams = [...urlSearchParams];
       if (searchParams.length > 0) {
-        submitNewSearch();
+        fetchArticles();
       }
       isMounted.current = true;
     }
   });
 
-  // When SEARCH button is clicked, either reset `sort` or `currentPage`, or submit a search
-  const submitNewSearch = () => {
-    const searchParams = Object.fromEntries([...urlSearchParams]);
-    if (searchParams.sort !== 'relevance') {
-      searchParams.sort = 'relevance';
-      setUrlSearchParams(searchParams);
-    } else if (currentPage !== 0) {
-      setCurrentPage(0);
-    } else {
-      fetchArticles();
-    }
-  }
-
-  const performKeywordSearch = keyword => {
-    setUrlSearchParams({
-      query: keyword,
-      sort: 'relevance'
-    });
-    submitNewSearch();
-  }
-
   const fetchArticles = async () => {
-    // Do not indicate fetching/loading if currentPage has been incremented (pagination)
+    // Do not indicate fetching to user if currentPage has been incremented (pagination)
     setIsFetching(currentPage === 0);
 
     const searchParams = Object.fromEntries([...urlSearchParams]);
@@ -109,29 +75,29 @@ function App() {
   const getActiveFiltersForFetchURL = () => {
     const searchParams = Object.fromEntries([...urlSearchParams]);
     let {glocation, newsDesks, materialTypes} = searchParams;
-    let filters = [];
+    let fetchFilters = [];
 
     if (newsDesks) {
       newsDesks = newsDesks.split(',');
       let values = newsDesks.map(value => `"${value}"`);
       let encodedValues = encodeURIComponent(values.join(' '));
-      filters.push(`news_desk:(${encodedValues})`);
+      fetchFilters.push(`news_desk:(${encodedValues})`);
     }
 
     if (materialTypes) {
       materialTypes = materialTypes.split(',');
       let values = materialTypes.map(value => `"${value}"`);
       let encodedValues = encodeURIComponent(values.join(' '));
-      filters.push(`type_of_material:(${encodedValues})`);
+      fetchFilters.push(`type_of_material:(${encodedValues})`);
     }
 
     if (glocation) {
       let value = `"${glocation}"`;
       let encodedValue = encodeURIComponent(value);
-      filters.push(`glocations.contains:(${encodedValue})`);
+      fetchFilters.push(`glocations.contains:(${encodedValue})`);
     }
 
-    return filters;
+    return fetchFilters;
   }
 
   const renderSearchSort = () => {
@@ -156,13 +122,14 @@ function App() {
       <SearchResults
         isFetching={isFetching}
         articles={articles}
-        performKeywordSearch={performKeywordSearch}
+        urlSearchParams={urlSearchParams}
+        setUrlSearchParams={setUrlSearchParams}
+        setCurrentPage={setCurrentPage}
       />
     );
   }
 
   const searchComplete = articles ? true : false;
-  const foundArticles = searchComplete && totalHits > 0;
 
   return (
     <div>
@@ -173,12 +140,12 @@ function App() {
         <SearchForm
           urlSearchParams={urlSearchParams}
           setUrlSearchParams={setUrlSearchParams}
-          submitNewSearch={submitNewSearch}
+          setCurrentPage={setCurrentPage}
         />
         {searchComplete ? renderTotalHits() : null}
-        {foundArticles ? renderSearchSort() : null}
+        {totalHits > 0 ? renderSearchSort() : null}
         <LoadingMessage isFetching={isFetching} />
-        {foundArticles ? renderSearchResults() : null}
+        {totalHits > 0 ? renderSearchResults() : null}
         <PlaceholderArticle 
           totalHits={totalHits} 
           currentPage={currentPage}

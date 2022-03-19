@@ -9,7 +9,9 @@ class SearchResults extends React.Component {
           <Article 
             key={article['_id']}
             article={article}
-            performKeywordSearch={this.props.performKeywordSearch}
+            urlSearchParams={this.props.urlSearchParams}
+            setUrlSearchParams={this.props.setUrlSearchParams}
+            setCurrentPage={this.props.setCurrentPage}
           />
         )}
       </ul>

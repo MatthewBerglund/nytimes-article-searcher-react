@@ -7,7 +7,7 @@ class FilterFieldset extends React.Component {
     const fieldsetID = `${slugify(this.props.fieldsetName)}-fieldset`;
 
     return (
-      <fieldset id={fieldsetID}>
+      <fieldset id={fieldsetID} ref={this.props.reference}>
           <legend>{this.props.fieldsetName}</legend>
           <ul>
             {this.props.checkboxValues.map(value => {
@@ -17,10 +17,6 @@ class FilterFieldset extends React.Component {
                   filter={this.props.filter}
                   key={slugify(value)}
                   checkboxValue={value}
-                  urlSearchParams={this.props.urlSearchParams}
-                  setUrlSearchParams={this.props.setUrlSearchParams}
-                // activeFilterValues={activeFilterValues}
-                // setFilter={setFilter}
                 />
               );
             })}

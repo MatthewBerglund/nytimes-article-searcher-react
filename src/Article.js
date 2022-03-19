@@ -18,9 +18,10 @@ class Article extends React.Component {
           <ArticleThumbnail thumbnail={article.multimedia.find(image => image.subtype === 'blog225')} />
           <KeywordList 
             keywords={article.keywords}
-            performKeywordSearch={this.props.performKeywordSearch}
+            urlSearchParams={this.props.urlSearchParams}
+            setUrlSearchParams={this.props.setUrlSearchParams}
+            setCurrentPage={this.props.setCurrentPage}
           />
-          {/* <ul className="keywords"></ul> */}
         </article>
       </li>
     );
