@@ -4,17 +4,17 @@ import { slugify } from './helpers';
 
 class FilterFieldset extends React.Component {
   render() {
-    const fieldsetID = `${slugify(this.props.fieldsetName)}-fieldset`;
+    const {fieldsetName, reference, checkboxValues} = this.props;
+    const fieldsetID = `${slugify(fieldsetName)}-fieldset`;
 
     return (
-      <fieldset id={fieldsetID} ref={this.props.reference}>
-          <legend>{this.props.fieldsetName}</legend>
+      <fieldset id={fieldsetID} ref={reference}>
+          <legend>{fieldsetName}</legend>
           <ul>
-            {this.props.checkboxValues.map(value => {
+            {checkboxValues.map(value => {
               return (
                 <FieldsetOption
-                  fieldsetName={this.props.fieldsetName}
-                  filter={this.props.filter}
+                  fieldsetName={fieldsetName}
                   key={slugify(value)}
                   checkboxValue={value}
                 />

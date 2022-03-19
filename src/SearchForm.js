@@ -14,6 +14,8 @@ class SearchForm extends React.Component {
   newsDesks = createRef();
   materialTypes = createRef();
 
+  // If query param is updated by another component (e.g. Keyword),
+  // update corresponding input element 
   componentDidUpdate() {
     let query = this.props.urlSearchParams.get('query');
     this.query.current.value = query ? query : '';
@@ -121,13 +123,11 @@ class SearchForm extends React.Component {
         <div id="filters-container" className={isMenuOpen ? 'open' : ''}>
           <FilterFieldset
             fieldsetName="News desks"
-            filter="newsDesks"
             checkboxValues={this.filters.newsDesks}
             reference={this.newsDesks}
           />
           <FilterFieldset
             fieldsetName="Material types"
-            filter="materialTypes"
             checkboxValues={this.filters.materialTypes}
             reference={this.materialTypes}
           />
