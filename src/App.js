@@ -59,8 +59,7 @@ function App() {
     // If fetching for infinite scrolling, concat new articles to existing ones, 
     // otherwise replace existing articles
     if (currentPage > 0) {
-      const prevArticles = articles.slice(0);
-      setArticles(prevArticles.concat(newArticles));
+      setArticles([...articles, ...newArticles]);
     } else {
       setArticles(newArticles);
       window.scroll(0, 0);
