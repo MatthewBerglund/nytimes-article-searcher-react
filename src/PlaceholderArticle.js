@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-// A placeholder article item that increments `currentPage` when it enters the viewport
+// A placeholder article item that increments `currentPage` when it intersects the viewport
 function PlaceholderArticle(props) {
   const paginationTrigger = useRef(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -19,7 +19,7 @@ function PlaceholderArticle(props) {
   }, [isIntersecting]);
 
   const handleIntersection = entries => {
-    const [ entry ] = entries;
+    const [entry] = entries;
     setIsIntersecting(entry.isIntersecting);
   }
 
