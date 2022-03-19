@@ -128,8 +128,6 @@ function App() {
     );
   }
 
-  const searchComplete = articles ? true : false;
-
   return (
     <div>
       <header>
@@ -141,7 +139,7 @@ function App() {
           setUrlSearchParams={setUrlSearchParams}
           setCurrentPage={setCurrentPage}
         />
-        {searchComplete ? renderTotalHits() : null}
+        {articles ? renderTotalHits() : null}
         {totalHits > 0 ? renderSearchSort() : null}
         <LoadingMessage isFetching={isFetching} />
         {totalHits > 0 ? renderSearchResults() : null}
