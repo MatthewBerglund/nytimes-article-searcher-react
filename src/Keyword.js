@@ -1,16 +1,18 @@
 import React from "react";
 
 function Keyword(props) {
+  const {keyword, urlSearchParams, setUrlSearchParams, setCurrentPage} = props;
+
   return (
     <li className="keyword" tabIndex="0">
       <a onClick={() => {
-        const searchParams = Object.fromEntries([...props.urlSearchParams]);
-        searchParams.query = props.keyword.value;
+        const searchParams = Object.fromEntries([...urlSearchParams]);
+        searchParams.query = keyword.value;
         searchParams.sort = 'relevance';
-        props.setCurrentPage(0);
-        props.setUrlSearchParams(searchParams);
+        setCurrentPage(0);
+        setUrlSearchParams(searchParams);
       }}>
-        {props.keyword.value}
+        {keyword.value}
       </a>
     </li>
   );
