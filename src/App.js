@@ -14,26 +14,36 @@ function App() {
   const [totalHits, setTotalHits] = useState(0);
   const [isFetching, setIsFetching] = useState(false);
   const isMounted = useRef(false);
-  
-  // If search params change, perform a search
-  // Do nothing on initial render
-  useEffect(() => {
-    if (isMounted.current) {
-      fetchArticles();
-    }
-  }, [urlSearchParams, currentPage]);
 
-  // On initial render: 
-  // Perform a search if there are search params, set `isMounted` equal to true
-  useEffect(() => {
-    if (!isMounted.current) {
-      const searchParams = [...urlSearchParams];
-      if (searchParams.length > 0) {
-        fetchArticles();
-      }
-      isMounted.current = true;
+  // Encode all active filter fields and values and return them 
+  // in an array for insertion into the API fetch URL
+  const getActiveFiltersForFetchURL = useCallback(() => {
+    const searchParams = Object.fromEntries([...urlSearchParams]);
+    let { glocation, newsDesks, materialTypes } = searchParams;
+    let fetchFilters = [];
+
+    if (newsDesks) {
+      newsDesks = newsDesks.split(',');
+      let values = newsDesks.map(value => `"${value}"`);
+      let encodedValues = encodeURIComponent(values.join(' '));
+      fetchFilters.push(`news_desk:(${encodedValues})`);
     }
-  });
+
+    if (materialTypes) {
+      materialTypes = materialTypes.split(',');
+      let values = materialTypes.map(value => `"${value}"`);
+      let encodedValues = encodeURIComponent(values.join(' '));
+      fetchFilters.push(`type_of_material:(${encodedValues})`);
+    }
+
+    if (glocation) {
+      let value = `"${glocation}"`;
+      let encodedValue = encodeURIComponent(value);
+      fetchFilters.push(`glocations.contains:(${encodedValue})`);
+    }
+
+    return fetchFilters;
+  }, [urlSearchParams]);
 
   const fetchArticles = useCallback(async () => {
     // Do not indicate fetching to user if currentPage has been incremented (pagination)
@@ -67,37 +77,27 @@ function App() {
 
     setTotalHits(searchResults.response.meta.hits);
     setIsFetching(false);
-  }, [urlSearchParams, currentPage, articles]);
-
-  // Encode all active filter fields and values and return them 
-  // in an array for insertion into the API fetch URL
-  const getActiveFiltersForFetchURL = useCallback(() => {
-    const searchParams = Object.fromEntries([...urlSearchParams]);
-    let { glocation, newsDesks, materialTypes } = searchParams;
-    let fetchFilters = [];
-
-    if (newsDesks) {
-      newsDesks = newsDesks.split(',');
-      let values = newsDesks.map(value => `"${value}"`);
-      let encodedValues = encodeURIComponent(values.join(' '));
-      fetchFilters.push(`news_desk:(${encodedValues})`);
+  }, [urlSearchParams, currentPage, articles, getActiveFiltersForFetchURL]);
+  
+  // If search params change, perform a search
+  // Do nothing on initial render
+  useEffect(() => {
+    if (isMounted.current) {
+      fetchArticles();
     }
+  }, [fetchArticles]);
 
-    if (materialTypes) {
-      materialTypes = materialTypes.split(',');
-      let values = materialTypes.map(value => `"${value}"`);
-      let encodedValues = encodeURIComponent(values.join(' '));
-      fetchFilters.push(`type_of_material:(${encodedValues})`);
+  // On initial render: 
+  // Perform a search if there are search params, set `isMounted` equal to true
+  useEffect(() => {
+    if (!isMounted.current) {
+      const searchParams = [...urlSearchParams];
+      if (searchParams.length > 0) {
+        fetchArticles();
+      }
+      isMounted.current = true;
     }
-
-    if (glocation) {
-      let value = `"${glocation}"`;
-      let encodedValue = encodeURIComponent(value);
-      fetchFilters.push(`glocations.contains:(${encodedValue})`);
-    }
-
-    return fetchFilters;
-  }, [urlSearchParams]);
+  });
 
   const renderSearchSort = () => {
     return (
