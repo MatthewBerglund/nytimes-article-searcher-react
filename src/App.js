@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './App.css';
 import SearchForm from './SearchForm';
@@ -35,12 +35,12 @@ function App() {
     }
   });
 
-  const fetchArticles = async () => {
+  const fetchArticles = useCallback(async () => {
     // Do not indicate fetching to user if currentPage has been incremented (pagination)
     setIsFetching(currentPage === 0);
 
     const searchParams = Object.fromEntries([...urlSearchParams]);
-    const {query, begin_date, end_date, sort} = searchParams;
+    const { query, begin_date, end_date, sort } = searchParams;
     const baseURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
     const key = 'brtQ9fXA0I1ATPctklZe6RcanXZRklYl';
     let fullURL = `${baseURL}?api-key=${key}&page=${currentPage}&sort=${sort}`;
@@ -51,11 +51,11 @@ function App() {
 
     let activeFilters = getActiveFiltersForFetchURL();
     fullURL += activeFilters.length > 0 ? `&fq=${activeFilters.join(' AND ')}` : '';
-    
+
     const response = await fetch(fullURL);
     const searchResults = await response.json();
     const newArticles = searchResults.response.docs;
-    
+
     // If fetching for infinite scrolling, concat new articles to existing ones, 
     // otherwise replace existing articles
     if (currentPage > 0) {
@@ -64,16 +64,16 @@ function App() {
       setArticles(newArticles);
       window.scroll(0, 0);
     }
-    
+
     setTotalHits(searchResults.response.meta.hits);
     setIsFetching(false);
-  }
+  }, [urlSearchParams, currentPage, articles]);
 
   // Encode all active filter fields and values and return them 
   // in an array for insertion into the API fetch URL
-  const getActiveFiltersForFetchURL = () => {
+  const getActiveFiltersForFetchURL = useCallback(() => {
     const searchParams = Object.fromEntries([...urlSearchParams]);
-    let {glocation, newsDesks, materialTypes} = searchParams;
+    let { glocation, newsDesks, materialTypes } = searchParams;
     let fetchFilters = [];
 
     if (newsDesks) {
@@ -97,7 +97,7 @@ function App() {
     }
 
     return fetchFilters;
-  }
+  }, [urlSearchParams]);
 
   const renderSearchSort = () => {
     return (
