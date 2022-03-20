@@ -14,7 +14,7 @@ function PlaceholderArticle(props) {
 
   useEffect(() => {
     if (isIntersecting) {
-      props.setCurrentPage(props.currentPage + 1);
+      props.setCurrentPage(currentPage => currentPage + 1);
     }
   }, [isIntersecting]);
 
