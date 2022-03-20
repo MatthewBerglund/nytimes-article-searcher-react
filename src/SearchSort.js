@@ -2,7 +2,7 @@ import React from "react";
 
 class SearchSort extends React.Component {
   render() {
-    const {urlSearchParams, setUrlSearchParams} = this.props;
+    const { urlSearchParams, setUrlSearchParams } = this.props;
     const searchParams = Object.fromEntries([...urlSearchParams]);
 
     return (

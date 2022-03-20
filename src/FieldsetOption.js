@@ -4,7 +4,7 @@ import { slugify } from './helpers';
 // Renders a checkbox that enables/disables a corresponding search filter
 class FieldsetOption extends React.Component {
   render() {
-    const {fieldsetName, checkboxValue} = this.props;
+    const { fieldsetName, checkboxValue } = this.props;
     const checkboxID = `${slugify(fieldsetName)}-${slugify(checkboxValue)}`;
 
     return (

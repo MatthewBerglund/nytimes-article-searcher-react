@@ -1,7 +1,7 @@
 import React from "react";
 
 function Keyword(props) {
-  const {keyword, urlSearchParams, setUrlSearchParams, setCurrentPage} = props;
+  const { keyword, urlSearchParams, setUrlSearchParams, setCurrentPage } = props;
 
   return (
     <li className="keyword" tabIndex="0">

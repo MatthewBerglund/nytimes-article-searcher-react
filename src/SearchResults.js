@@ -3,7 +3,7 @@ import Article from './Article';
 
 class SearchResults extends React.Component {
   render() {
-    const {articles, isFetching} = this.props;
+    const { articles, isFetching } = this.props;
 
     return (
       <ul id="articles-container" className={isFetching ? 'loading' : ''}>
