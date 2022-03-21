@@ -82,6 +82,7 @@ function App() {
     };
 
     const searchParams = [...urlSearchParams];
+    
     if (searchParams.length > 0) {
       fetchArticles();
     }
