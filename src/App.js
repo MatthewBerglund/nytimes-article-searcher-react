@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './App.css';
 import SearchForm from './SearchForm';
@@ -8,6 +8,7 @@ import LoadingMessage from './LoadingMessage';
 import PlaceholderArticle from './PlaceholderArticle';
 
 function App() {
+  // urlSearchParams keys: query, begin_date, end_date, glocation, news_desks, material_types
   const [urlSearchParams, setUrlSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(0);
   const [articles, setArticles] = useState(null);
