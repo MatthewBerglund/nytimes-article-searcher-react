@@ -65,12 +65,12 @@ class SearchForm extends React.Component {
 
     const newsDeskValues = getValuesFromFieldset(this.newsDesks.current);
     if (newsDeskValues.length > 0) {
-      searchParams.newsDesks = newsDeskValues.join(',');
+      searchParams.news_desks = newsDeskValues.join(',');
     }
 
     const materialTypeValues = getValuesFromFieldset(this.materialTypes.current);
     if (materialTypeValues.length > 0) {
-      searchParams.materialTypes = materialTypeValues.join(',');
+      searchParams.material_types = materialTypeValues.join(',');
     }
 
     this.props.setCurrentPage(0);

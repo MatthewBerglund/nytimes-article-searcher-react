@@ -13,24 +13,23 @@ function App() {
   const [articles, setArticles] = useState(null);
   const [totalHits, setTotalHits] = useState(0);
   const [isFetching, setIsFetching] = useState(false);
-  const isMounted = useRef(false);
 
   // Encode all active filter fields and values and return them 
   // in an array for insertion into the API fetch URL
   const getActiveFiltersForFetchURL = useCallback(() => {
     const searchParams = Object.fromEntries([...urlSearchParams]);
-    let { glocation, newsDesks, materialTypes } = searchParams;
+    let { glocation, news_desks, material_types } = searchParams;
     let fetchFilters = [];
 
-    if (newsDesks) {
-      newsDesks = newsDesks.split(',');
+    if (news_desks) {
+      const newsDesks = news_desks.split(',');
       let values = newsDesks.map(value => `"${value}"`);
       let encodedValues = encodeURIComponent(values.join(' '));
       fetchFilters.push(`news_desk:(${encodedValues})`);
     }
 
-    if (materialTypes) {
-      materialTypes = materialTypes.split(',');
+    if (material_types) {
+      const materialTypes = material_types.split(',');
       let values = materialTypes.map(value => `"${value}"`);
       let encodedValues = encodeURIComponent(values.join(' '));
       fetchFilters.push(`type_of_material:(${encodedValues})`);
@@ -69,7 +68,7 @@ function App() {
     // If fetching for infinite scrolling, concat new articles to existing ones, 
     // otherwise replace existing articles
     if (currentPage > 0) {
-      setArticles([...articles, ...newArticles]);
+      setArticles(articles => [...articles, ...newArticles]);
     } else {
       setArticles(newArticles);
       window.scroll(0, 0);
@@ -77,33 +76,23 @@ function App() {
 
     setTotalHits(searchResults.response.meta.hits);
     setIsFetching(false);
-  }, [urlSearchParams, currentPage, articles, getActiveFiltersForFetchURL]);
-  
-  // If search params change, perform a search
-  // Do nothing on initial render
+  }, [urlSearchParams, currentPage, getActiveFiltersForFetchURL]);
+
+  // Perform a search if `fetchArticles()` has updated and there are params in the browser URL
+  // Note: `fetchArticles` has search params as dependency
   useEffect(() => {
-    if (isMounted.current) {
+    const searchParams = [...urlSearchParams];
+    if (searchParams.length > 0) {
       fetchArticles();
     }
   }, [fetchArticles]);
-
-  // On initial render: 
-  // Perform a search if there are search params, set `isMounted` equal to true
-  useEffect(() => {
-    if (!isMounted.current) {
-      const searchParams = [...urlSearchParams];
-      if (searchParams.length > 0) {
-        fetchArticles();
-      }
-      isMounted.current = true;
-    }
-  });
 
   const renderSearchSort = () => {
     return (
       <SearchSort
         urlSearchParams={urlSearchParams}
         setUrlSearchParams={setUrlSearchParams}
+        setCurrentPage={setCurrentPage}
       />
     );
   }
