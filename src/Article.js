@@ -1,17 +1,27 @@
 import React from 'react';
 import Keyword from './Keyword';
+import ArticleAbstract from './ArticleAbstract';
+import ArticleThumbnail from './ArticleThumbnail';
+import KeywordList from './KeywordList';
 
 class Article extends React.Component {
   render() {
+    const article = this.props.article;
+
     return (
       <li>
         <article>
-          <a target="_blank" className="headline-link">
-            <h2>{this.props.article.headline.main}</h2>
+          <a href={article.web_url} target="_blank" className="headline-link">
+            <h2>{article.headline.main}</h2>
           </a>
-          <p className="article-abstract">{this.props.article['pub_date']}</p>
-          <img className="article-img" />
-          <ul className="keywords"></ul>
+          <ArticleAbstract abstract={article.abstract} />
+          <ArticleThumbnail thumbnail={article.multimedia.find(image => image.subtype === 'blog225')} />
+          <KeywordList 
+            keywords={article.keywords}
+            urlSearchParams={this.props.urlSearchParams}
+            setUrlSearchParams={this.props.setUrlSearchParams}
+            setCurrentPage={this.props.setCurrentPage}
+          />
         </article>
       </li>
     );

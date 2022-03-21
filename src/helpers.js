@@ -18,3 +18,10 @@ export function camelCaseify(string) {
   words.unshift(firstWord);
   return words.join('');
 }
+
+export function getValuesFromFieldset(fieldset) {
+  const elements = Array.from(fieldset.elements);
+  const selectedElements = elements.filter(element => element.checked);
+  const values = selectedElements.map(element => element.value);
+  return values;
+}

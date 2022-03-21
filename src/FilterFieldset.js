@@ -4,11 +4,11 @@ import { slugify } from './helpers';
 
 class FilterFieldset extends React.Component {
   render() {
-    const {fieldsetName, checkboxValues, activeFilterValues, setFilter} = this.props;
+    const { fieldsetName, reference, checkboxValues } = this.props;
     const fieldsetID = `${slugify(fieldsetName)}-fieldset`;
 
     return (
-      <fieldset id={fieldsetID}>
+      <fieldset id={fieldsetID} ref={reference}>
           <legend>{fieldsetName}</legend>
           <ul>
             {checkboxValues.map(value => {
@@ -17,8 +17,6 @@ class FilterFieldset extends React.Component {
                   fieldsetName={fieldsetName}
                   key={slugify(value)}
                   checkboxValue={value}
-                  activeFilterValues={activeFilterValues}
-                  setFilter={setFilter}
                 />
               );
             })}

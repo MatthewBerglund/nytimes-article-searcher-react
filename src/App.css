@@ -118,7 +118,7 @@ fieldset {
 #filters-container {
   align-items: flex-start;
   column-gap: 15px;
-  display: grid;
+  display: none;
   grid-template: "newsDesk material location";
   margin-top: 20px;
   row-gap: 15px;
@@ -281,9 +281,8 @@ span {
 
 #pagination-trigger {
   align-items: center;
-  display: none;
+  display: flex;
   justify-content: center;
-  visibility: hidden;
 }
 
 #placeholder-article {

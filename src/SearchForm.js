@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { createRef } from 'react';
+import { getValuesFromFieldset } from './helpers';
 import FilterFieldset from './FilterFieldset';
 
 class SearchForm extends React.Component {
   state = {
     isMenuOpen: false,
   };
+
+  query = createRef();
+  beginDate = createRef();
+  endDate = createRef();
+  glocation = createRef();
+  newsDesks = createRef();
+  materialTypes = createRef();
+
+  // If query param is updated by another component (e.g. Keyword),
+  // update corresponding input element 
+  componentDidUpdate() {
+    let query = this.props.urlSearchParams.get('query');
+    this.query.current.value = query ? query : '';
+  }
 
   filters = {
     newsDesks: [
@@ -26,49 +41,47 @@ class SearchForm extends React.Component {
       'Archives',
       'Op-ed'
     ]
-  }
+  };
 
-  renderFiltersContainer = () => {
-    return (
-      <div id="filters-container">
-        <FilterFieldset
-          fieldsetName="News desks"
-          checkboxValues={this.filters.newsDesks}
-          activeFilterValues={this.props.newsDesks}
-          setFilter={this.props.setNewsDesks}
-        />
-        <FilterFieldset
-          fieldsetName="Material types"
-          checkboxValues={this.filters.materialTypes}
-          activeFilterValues={this.props.materialTypes}
-          setFilter={this.props.setMaterialTypes}
-        />
-        <div>
-          <label htmlFor="location-search">Location:</label>
-          <input 
-            type="search" 
-            id="location-search"
-            name="glocation"
-            value={this.props.glocation}
-            onChange={e => this.props.setGlocation(e.target.value)}
-          />
-        </div>
-      </div>
-   );
-  }
+  submitNewSearch = () => {
+    const searchParams = {}
+    searchParams.sort = 'relevance';
 
-  renderLoadingMessage = () => {
-    return (
-      <div id="loading-msg">
-        <p>Loading...</p>
-      </div>
-    );
+    if (this.query.current.value) {
+      searchParams.query = this.query.current.value;
+    }
+
+    if (this.beginDate.current.value) {
+      searchParams.begin_date = this.beginDate.current.value;
+    }
+
+    if (this.endDate.current.value) {
+      searchParams.end_date = this.endDate.current.value;
+    }
+
+    if (this.glocation.current.value) {
+      searchParams.glocation = this.glocation.current.value;
+    }
+
+    const newsDeskValues = getValuesFromFieldset(this.newsDesks.current);
+    if (newsDeskValues.length > 0) {
+      searchParams.news_desks = newsDeskValues.join(',');
+    }
+
+    const materialTypeValues = getValuesFromFieldset(this.materialTypes.current);
+    if (materialTypeValues.length > 0) {
+      searchParams.material_types = materialTypeValues.join(',');
+    }
+
+    this.props.setCurrentPage(0);
+    this.props.setUrlSearchParams(searchParams);
   }
   
   render() {
     const isMenuOpen = this.state.isMenuOpen;
-    const filtersContainer = isMenuOpen ? this.renderFiltersContainer() : null;
-
+    const urlSearchParams = this.props.urlSearchParams;
+    const searchParams = Object.fromEntries([...urlSearchParams]);
+    
     return (
       <form>
         <div id="search-controls-container">
@@ -76,53 +89,58 @@ class SearchForm extends React.Component {
             <input
               type="search" 
               id="query-input"
-              name="query" 
+              ref={this.query}
               placeholder="Enter a search term"
-              value={this.props.searchQuery.query}
-              onChange={e => {
-                const searchQuery = {...this.props.searchQuery};
-                searchQuery.query = e.target.value;
-                this.props.setSearchQuery(searchQuery);
-              }}
+              defaultValue={searchParams.query || ''}
             />
           </div>
           <div>
             <label htmlFor="begin-date">Start:</label>
             <input 
               type="date" 
-              id="begin-date" 
-              name="begin" 
-              value={this.props.searchQuery.beginDate} 
-              onChange={e => {
-                const searchQuery = {...this.props.searchQuery};
-                searchQuery.beginDate = e.target.value;
-                this.props.setSearchQuery(searchQuery);
-              }}
+              id="begin-date"
+              ref={this.beginDate}
+              defaultValue={searchParams.begin_date || ''}
             />
           </div>
           <div>
             <label htmlFor="end-date">End:</label>
             <input 
               type="date" 
-              id="end-date" 
-              name="end" 
-              value={this.props.searchQuery.endDate}
-              onChange={e => {
-                const searchQuery = {...this.props.searchQuery};
-                searchQuery.endDate = e.target.value;
-                this.props.setSearchQuery(searchQuery);
-              }} 
+              id="end-date"
+              ref={this.endDate} 
+              defaultValue={searchParams.end_date || ''}
             />
           </div>
           <button 
             type="button" 
             id="submit" 
-            onClick={() => this.props.submitNewSearch()}
+            onClick={this.submitNewSearch}
           >
             Search
           </button>
         </div>
-        {filtersContainer}
+        <div id="filters-container" className={isMenuOpen ? 'open' : ''}>
+          <FilterFieldset
+            fieldsetName="News desks"
+            checkboxValues={this.filters.newsDesks}
+            reference={this.newsDesks}
+          />
+          <FilterFieldset
+            fieldsetName="Material types"
+            checkboxValues={this.filters.materialTypes}
+            reference={this.materialTypes}
+          />
+          <div>
+            <label htmlFor="location-search">Location:</label>
+            <input
+              type="search"
+              id="location-search"
+              ref={this.glocation}
+              defaultValue={searchParams.glocation || ''}
+            />
+          </div>
+        </div>
         <button
           type="button"
           id="filters-button"  
