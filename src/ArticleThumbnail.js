@@ -6,6 +6,7 @@ function ArticleThumbnail(props) {
       <img
         src={`http://www.nytimes.com/${props.thumbnail.url}`} 
         className="article-img"
+        alt="article thumbnail"
       />
     );
   } else {

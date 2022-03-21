@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 function PlaceholderArticle(props) {
   const paginationTrigger = useRef(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const setCurrentPage = props.setCurrentPage;
 
   useEffect(() => {
     if (paginationTrigger.current) {
@@ -14,9 +15,9 @@ function PlaceholderArticle(props) {
 
   useEffect(() => {
     if (isIntersecting) {
-      props.setCurrentPage(currentPage => currentPage + 1);
+      setCurrentPage(currentPage => currentPage + 1);
     }
-  }, [isIntersecting]);
+  }, [isIntersecting, setCurrentPage]);
 
   const handleIntersection = entries => {
     const [entry] = entries;

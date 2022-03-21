@@ -1,5 +1,4 @@
 import React from 'react';
-import Keyword from './Keyword';
 import ArticleAbstract from './ArticleAbstract';
 import ArticleThumbnail from './ArticleThumbnail';
 import KeywordList from './KeywordList';
