@@ -1,17 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import { KeywordClickContext } from "./App";
 
-function Keyword(props) {
-  const { keyword, urlSearchParams, setUrlSearchParams, setCurrentPage } = props;
+function Keyword({ keyword }) {
+  const performKeywordSearch = useContext(KeywordClickContext);
 
   return (
     <li className="keyword" tabIndex="0">
-      <a onClick={() => {
-        const searchParams = Object.fromEntries([...urlSearchParams]);
-        searchParams.query = keyword.value;
-        searchParams.sort = 'relevance';
-        setCurrentPage(0);
-        setUrlSearchParams(searchParams);
-      }}>
+      <a onClick={e => performKeywordSearch(keyword.value)}>
         {keyword.value}
       </a>
     </li>

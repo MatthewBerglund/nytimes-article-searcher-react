@@ -12,9 +12,6 @@ function KeywordList(props) {
             <Keyword 
               key={index}
               keyword={keyword}
-              urlSearchParams={props.urlSearchParams}
-              setUrlSearchParams={props.setUrlSearchParams}
-              setCurrentPage={props.setCurrentPage}
             />
           );
         })}
