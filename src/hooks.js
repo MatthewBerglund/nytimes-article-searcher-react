@@ -30,15 +30,13 @@ export function useFetchArticles(urlSearchParams, currentPage) {
       let fetchFilters = [];
 
       if (newsDesks) {
-        const newsDesks = newsDesks.split(',');
-        let values = newsDesks.map(value => `"${value}"`);
+        let values = newsDesks.split(',').map(value => `"${value}"`);
         let encodedValues = encodeURIComponent(values.join(' '));
         fetchFilters.push(`news_desk:(${encodedValues})`);
       }
 
       if (materialTypes) {
-        const materialTypes = materialTypes.split(',');
-        let values = materialTypes.map(value => `"${value}"`);
+        let values = materialTypes.split(',').map(value => `"${value}"`);
         let encodedValues = encodeURIComponent(values.join(' '));
         fetchFilters.push(`type_of_material:(${encodedValues})`);
       }

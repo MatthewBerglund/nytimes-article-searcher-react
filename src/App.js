@@ -15,10 +15,6 @@ function App() {
   const [urlSearchParams, setUrlSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(0);
   const { articles, totalHits, isFetching } = useFetchArticles(urlSearchParams, currentPage);
-
-  const performNewSearch = () => {
-    console.log('Performing a new search.');
-  }
   
   const performKeywordSearch = (keyword) => {
     const searchParams = Object.fromEntries([...urlSearchParams]);
@@ -27,13 +23,19 @@ function App() {
     setCurrentPage(0);
     setUrlSearchParams(searchParams)
   }
+
+  const sortSearchResults = (sortOrder) => {
+    const searchParams = Object.fromEntries([...urlSearchParams]);
+    searchParams.sort = sortOrder;
+    setCurrentPage(0);
+    setUrlSearchParams(searchParams);
+  }
   
   const renderSearchSort = () => {
     return (
       <SearchSort
+        sortSearchResults={sortSearchResults}
         urlSearchParams={urlSearchParams}
-        setUrlSearchParams={setUrlSearchParams}
-        setCurrentPage={setCurrentPage}
       />
     );
   }

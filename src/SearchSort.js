@@ -2,7 +2,7 @@ import React from "react";
 
 class SearchSort extends React.Component {
   render() {
-    const { urlSearchParams, setUrlSearchParams, setCurrentPage } = this.props;
+    const { urlSearchParams, sortSearchResults } = this.props;
     const searchParams = Object.fromEntries([...urlSearchParams]);
 
     return (
@@ -12,11 +12,7 @@ class SearchSort extends React.Component {
           name="sortOrder" 
           id="sort-order-select" 
           value={searchParams.sort || 'relevance'}
-          onChange={e => {
-            searchParams.sort = e.target.value;
-            setUrlSearchParams(searchParams);
-            setCurrentPage(0);
-          }}
+          onChange={e => sortSearchResults(e.target.value)}
         >
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
