@@ -16,6 +16,10 @@ function App() {
   const [currentPage, setCurrentPage] = useState(0);
   const { articles, totalHits, isFetching } = useFetchArticles(urlSearchParams, currentPage);
 
+  const performNewSearch = () => {
+    console.log('Performing a new search.');
+  }
+  
   const performKeywordSearch = (keyword) => {
     const searchParams = Object.fromEntries([...urlSearchParams]);
     searchParams.query = keyword;
@@ -43,12 +47,6 @@ function App() {
   }
 
   const renderSearchResults = () => {
-    const contextValue = { 
-      urlSearchParams, 
-      setUrlSearchParams,
-      setCurrentPage
-    };
-
     return (
       <KeywordClickContext.Provider value={performKeywordSearch}>
         <SearchResults
