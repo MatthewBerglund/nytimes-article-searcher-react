@@ -92,6 +92,11 @@ class SearchForm extends React.Component {
               ref={this.query}
               placeholder="Enter a search term"
               defaultValue={searchParams.query || ''}
+              onKeyUp={e => {
+                if (e.key === 'Enter') {
+                  this.submitNewSearch();
+                };
+              }}
             />
           </div>
           <div>
@@ -138,6 +143,11 @@ class SearchForm extends React.Component {
               id="location-search"
               ref={this.glocation}
               defaultValue={searchParams.glocation || ''}
+              onKeyUp={e => {
+                if (e.key === 'Enter') {
+                  this.submitNewSearch();
+                };
+              }}
             />
           </div>
         </div>
