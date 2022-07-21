@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
-import { KeywordClickContext } from "./App";
+import { useContext } from "react";
 
-function Keyword({ keyword }) {
+import { KeywordClickContext } from "../App";
+
+const Keyword = ({ keyword }) => {
   const performKeywordSearch = useContext(KeywordClickContext);
 
   return (
     <li className="keyword" tabIndex="0">
-      <a onClick={e => performKeywordSearch(keyword.value)}>
+      <a onClick={() => performKeywordSearch(keyword.value)}>
         {keyword.value}
       </a>
     </li>
