@@ -8,7 +8,7 @@ const Article = ({ article }) => {
   const thumbnail = multimedia.find(image => image.subtype === 'blog225');
 
   return (
-    <article>
+    <article className={styles.article}>
       <a href={web_url} target="_blank" className={styles.headline}>
         <h2>{headline.main}</h2>
       </a>

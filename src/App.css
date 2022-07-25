@@ -34,6 +34,10 @@ a:hover {
   cursor: pointer;
 }
 
+li {
+  list-style: none;
+}
+
 /* Buttons */
 
 button {
@@ -199,9 +203,7 @@ select:hover {
 
 /* Search results */
 
-li {
-  list-style: none;
-}
+
 
 .keyword {
   background: #00000005;
@@ -223,10 +225,6 @@ li {
   align-items: center;
   display: flex;
   flex-direction: column;
-}
-
-.loading {
-  opacity: 0.25;
 }
 
 /* Page bottom intersection */
