@@ -20,6 +20,10 @@ const App = () => {
 
   const { articles, totalHits, isLoading } = useFetchArticles(urlSearchParams, currentPage);
 
+  // API limits pagination to 1000 articles (100 pages)
+  const totalScrollableHits = (totalHits > 1000) ? 1000 : totalHits;
+  const totalScrollablePages = Math.floor(totalScrollableHits / 10);
+
   const performKeywordSearch = (keyword) => {
     const searchParams = Object.fromEntries([...urlSearchParams]);
     searchParams.query = keyword;
@@ -67,11 +71,9 @@ const App = () => {
             <SearchResults isLoading={isLoading} articles={articles} />
           </KeywordClickContext.Provider>
         ) : null}
-        <PlaceholderArticle
-          totalHits={totalHits}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
+        {currentPage < totalScrollablePages ? (
+          <PlaceholderArticle setCurrentPage={setCurrentPage} />
+        ) : null}
       </main>
     </div>
   );
