@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 
-import article from './Article.module.css';
-import placeholder from './PlaceholderArticle.module.css';
+import article from './Article';
+import placeholder from '../styles/PlaceholderArticle.module.css';
 
 // A placeholder article item that increments `currentPage` when it intersects the viewport
 function PlaceholderArticle({ setCurrentPage }) {

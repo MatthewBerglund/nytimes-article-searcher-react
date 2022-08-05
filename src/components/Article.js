@@ -1,4 +1,4 @@
-import styles from './Article.module.css';
+import styles from '../styles/Article.module.css';
 
 import Keyword from '../components/Keyword';
 

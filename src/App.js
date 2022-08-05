@@ -6,7 +6,7 @@ import SearchSort from './components/SearchSort'
 import SearchResults from './components/SearchResults';
 import PlaceholderArticle from './components/PlaceholderArticle';
 
-import './App.css';
+import './styles/App.css';
 
 import { useFetchArticles } from './utils/hooks';
 

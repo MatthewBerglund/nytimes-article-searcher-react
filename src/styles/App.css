@@ -203,24 +203,6 @@ select:hover {
 
 /* Search results */
 
-
-
-.keyword {
-  background: #00000005;
-  border-radius: 15px;
-  border: 1px solid #00000010;
-  font-size: 13px;
-  margin: 7px 7px 0 0;
-  padding: 3px 7px;
-  transition: all 0.2s ease;
-}
-
-.keyword:hover {
-  color: white;
-  cursor: pointer;
-  background: #36382E;
-}
-
 #articles-container {
   align-items: center;
   display: flex;

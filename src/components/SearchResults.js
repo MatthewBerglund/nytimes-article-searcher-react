@@ -1,4 +1,4 @@
-import styles from './SearchResults.module.css';
+import styles from '../styles/SearchResults.module.css';
 
 import Article from './Article';
 
