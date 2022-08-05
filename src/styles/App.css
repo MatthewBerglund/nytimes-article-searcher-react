@@ -154,29 +154,6 @@ fieldset {
   width: 250px;
 }
 
-/* Loading message */
-
-#loading-msg {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-  position: fixed;
-  top: 60vh;
-}
-
-#loading-msg p {
-  font-size: 22px;
-  font-weight: bold;
-  position: absolute;
-}
-
-/* Meta info (total hits) */
-
-#total-hits-container {
-  margin-bottom: 25px;
-  margin-top: 25px;
-}
-
 /* Sort controls */
 
 select {
@@ -199,12 +176,4 @@ select:hover {
   justify-content: flex-end;
   margin: 25px 0 10px 0;
   width: 719px;
-}
-
-/* Search results */
-
-#articles-container {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
 }

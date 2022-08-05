@@ -5,6 +5,8 @@ import SearchForm from './components/SearchForm';
 import SearchSort from './components/SearchSort'
 import SearchResults from './components/SearchResults';
 import PlaceholderArticle from './components/PlaceholderArticle';
+import Hits from './components/Hits';
+import Loading from './components/Loading';
 
 import './styles/App.css';
 
@@ -51,9 +53,7 @@ const App = () => {
           setCurrentPage={setCurrentPage}
         />
         {articles ? (
-          <div id="total-hits-container">
-            <p>Your search returned {totalHits} hits.</p>
-          </div>
+          <Hits total={totalHits} />
         ) : null}
         {totalHits > 0 ? (
           <SearchSort
@@ -62,9 +62,7 @@ const App = () => {
           />
         ) : null}
         {isLoading ? (
-          <div id="loading-msg">
-            <p>Loading...</p>
-          </div>
+          <Loading />
         ) : null}
         {totalHits > 0 ? (
           <KeywordClickContext.Provider value={performKeywordSearch}>

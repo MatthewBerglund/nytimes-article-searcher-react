@@ -4,7 +4,7 @@ import Article from './Article';
 
 const SearchResults = ({ articles, isLoading }) => {
   return (
-    <ul id="articles-container" className={isLoading ? styles.loading : ''} >
+    <ul className={`${styles.list} ${isLoading ? styles.loading : ''}`} >
       {
         articles.map(article =>
           <li key={article._id}>
