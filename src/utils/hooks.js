@@ -3,17 +3,17 @@ import { useState, useEffect } from "react";
 export function useFetchArticles(urlSearchParams, currentPage) {
   const [articles, setArticles] = useState(null);
   const [totalHits, setTotalHits] = useState(0);
-  const [isFetching, setIsFetching] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Perform a search if search params change
   useEffect(() => {
     const getFetchUrl = (urlSearchParams) => {
       const searchParams = Object.fromEntries([...urlSearchParams]);
-      const { query, begin_date, end_date, sort} = searchParams;
+      const { query, begin_date, end_date, sort } = searchParams;
       const baseURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
       const key = 'brtQ9fXA0I1ATPctklZe6RcanXZRklYl';
       let fullURL = `${baseURL}?api-key=${key}&page=${currentPage}&sort=${sort}`;
-      
+
       fullURL += query ? `&q=${query}` : '';
       fullURL += begin_date ? `&begin_date=${begin_date}` : '';
       fullURL += end_date ? `&end_date=${end_date}` : '';
@@ -49,10 +49,10 @@ export function useFetchArticles(urlSearchParams, currentPage) {
 
       return fetchFilters;
     };
-    
+
     const fetchArticles = async (url) => {
       // Do not indicate fetching to user if page has been incremented (pagination)
-      setIsFetching(currentPage === 0);
+      setIsLoading(currentPage === 0);
       const response = await fetch(url);
       const searchResults = await response.json();
       const newArticles = searchResults.response.docs;
@@ -67,7 +67,7 @@ export function useFetchArticles(urlSearchParams, currentPage) {
       }
 
       setTotalHits(searchResults.response.meta.hits);
-      setIsFetching(false);
+      setIsLoading(false);
     };
 
     if ([...urlSearchParams].length > 0) {
@@ -76,5 +76,5 @@ export function useFetchArticles(urlSearchParams, currentPage) {
     }
   }, [urlSearchParams, currentPage]);
 
-  return { articles, totalHits, isFetching };
+  return { articles, totalHits, isLoading };
 }

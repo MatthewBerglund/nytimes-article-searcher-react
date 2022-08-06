@@ -1,0 +1,34 @@
+.pagination_trigger {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  display: block;
+  background-color: #e0e0e0;
+}
+
+.article {
+  height: 300px;
+}
+
+.headline {
+  height: 50px;
+  width: 420px;
+}
+
+.abstract {
+  height: 120px;
+  width: 420px;
+}
+
+.thumbnail {
+  height: 150px;
+  width: 200px;
+}
+
+.keywords {
+  height: 30px;
+  width: auto;
+}
