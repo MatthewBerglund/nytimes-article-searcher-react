@@ -1,0 +1,34 @@
+.controls {
+  align-items: center;
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+}
+
+.filters_btn {
+  background: none;
+  border: none;
+  color: #0061bb;
+  font-size: 14px;
+  font-weight: 400;
+  justify-self: center;
+  padding: 14px;
+}
+
+.filters_btn:hover {
+  background: none;
+  text-decoration: underline;
+}
+
+.filters {
+  align-items: flex-start;
+  column-gap: 15px;
+  display: none;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 20px;
+  row-gap: 15px;
+}
+
+.open {
+  display: grid;
+}

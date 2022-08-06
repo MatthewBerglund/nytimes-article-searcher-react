@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 
-import FilterFieldset from './FilterFieldset';
+import Fieldset from './Fieldset';
 
 import { getValuesFromFieldset } from '../utils/helpers';
+
+import styles from '../styles/SearchForm.module.css';
 
 const SearchForm = ({ urlSearchParams, setUrlSearchParams, setCurrentPage }) => {
   const [showFilters, setShowFilters] = useState(false);
@@ -80,7 +82,7 @@ const SearchForm = ({ urlSearchParams, setUrlSearchParams, setCurrentPage }) => 
 
   return (
     <form>
-      <div id="search-controls-container">
+      <div className={styles.controls}>
         <div>
           <input
             type="search"
@@ -121,17 +123,21 @@ const SearchForm = ({ urlSearchParams, setUrlSearchParams, setCurrentPage }) => 
           Search
         </button>
       </div>
-      <div id="filters-container" className={showFilters ? 'open' : ''}>
-        <FilterFieldset
-          fieldsetName="News desks"
-          checkboxValues={filters.newsDesks}
-          ref={newsDesks}
-        />
-        <FilterFieldset
-          fieldsetName="Material types"
-          checkboxValues={filters.materialTypes}
-          ref={materialTypes}
-        />
+      <div className={`${styles.filters} ${showFilters ? styles.open : ''}`}>
+        <div>
+          <Fieldset
+            name="News desks"
+            values={filters.newsDesks}
+            ref={newsDesks}
+          />
+        </div>
+        <div>
+          <Fieldset
+            name="Material types"
+            values={filters.materialTypes}
+            ref={materialTypes}
+          />
+        </div>
         <div>
           <label htmlFor="location-search">Location:</label>
           <input
@@ -149,7 +155,7 @@ const SearchForm = ({ urlSearchParams, setUrlSearchParams, setCurrentPage }) => 
       </div>
       <button
         type="button"
-        id="filters-button"
+        className={styles.filters_btn}
         onClick={() => setShowFilters(!showFilters)}
       >
         {showFilters ? 'Hide filters' : 'Show filters'}

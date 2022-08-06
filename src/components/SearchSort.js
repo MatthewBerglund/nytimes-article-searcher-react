@@ -1,8 +1,10 @@
+import styles from '../styles/SearchSort.module.css';
+
 const SearchSort = ({ urlSearchParams, sortSearchResults }) => {
   const searchParams = Object.fromEntries([...urlSearchParams]);
 
   return (
-    <div id="sort-order-container">
+    <div className={styles.container}>
       <label htmlFor="sort-order-select">Sort by:</label>
       <select
         name="sortOrder"

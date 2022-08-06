@@ -4,19 +4,19 @@ import FieldsetOption from "./FieldsetOption";
 
 import { slugify } from '../utils/helpers';
 
-const FilterFieldset = forwardRef(({ fieldsetName, checkboxValues }, ref) => {
-  const fieldsetID = `${slugify(fieldsetName)}-fieldset`;
+const FilterFieldset = forwardRef(({ name, values }, ref) => {
+  // const fieldsetID = `${slugify(fieldsetName)}-fieldset`;
 
   return (
-    <fieldset id={fieldsetID} ref={ref}>
-      <legend>{fieldsetName}</legend>
+    <fieldset ref={ref}>
+      <legend>{name}</legend>
       <ul>
-        {checkboxValues.map(value => {
+        {values.map(value => {
           return (
             <FieldsetOption
-              fieldsetName={fieldsetName}
+              fieldset={name}
               key={slugify(value)}
-              checkboxValue={value}
+              value={value}
             />
           );
         })}

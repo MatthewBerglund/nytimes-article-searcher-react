@@ -38,8 +38,6 @@ li {
   list-style: none;
 }
 
-/* Buttons */
-
 button {
   background: #ffb700;
   border: none;
@@ -53,8 +51,6 @@ button:hover {
   background: #e0a100;
   cursor: pointer;
 }
-
-/* Search form */
 
 form {
   border-radius: 5px;
@@ -92,70 +88,6 @@ fieldset {
   padding: 10px;
 }
 
-.fieldset-option-container {
-  align-items: center;
-  display: flex;
-  margin-bottom: 10px;
-}
-
-#search-controls-container {
-  align-items: center;
-  display: flex;
-  height: 50px;
-  justify-content: space-between;
-}
-
-#filters-button {
-  background: none;
-  border: none;
-  color: #0061bb;
-  font-size: 14px;
-  font-weight: 400;
-  justify-self: center;
-  padding: 14px;
-}
-
-#filters-button:hover {
-  text-decoration: underline;
-}
-
-#filters-container {
-  align-items: flex-start;
-  column-gap: 15px;
-  display: none;
-  grid-template: "newsDesk material location";
-  margin-top: 20px;
-  row-gap: 15px;
-}
-
-#filters-container.open {
-  display: grid;
-}
-
-#news-desks-fieldset {
-  grid-area: newsDesk;
-  width: 380px;
-}
-
-#news-desks-fieldset ul {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-#material-types-fieldset {
-  grid-area: material;
-  row-gap: 10px;
-  width: 140px;
-}
-
-#location-search {
-  display: block;
-  height: 40px;
-  width: 250px;
-}
-
-/* Sort controls */
-
 select {
   background: none;
   border: none;
@@ -168,12 +100,4 @@ select {
 select:hover {
   cursor: pointer;
   text-decoration: underline;
-}
-
-#sort-order-container {
-  align-items: center;
-  display: flex;
-  justify-content: flex-end;
-  margin: 25px 0 10px 0;
-  width: 719px;
 }

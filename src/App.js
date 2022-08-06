@@ -8,7 +8,7 @@ import PlaceholderArticle from './components/PlaceholderArticle';
 import Hits from './components/Hits';
 import Loading from './components/Loading';
 
-import './styles/App.css';
+import './styles/Global.css';
 
 import { useFetchArticles } from './utils/hooks';
 
