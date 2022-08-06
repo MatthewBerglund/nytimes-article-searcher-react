@@ -1,3 +1,5 @@
+import React from 'react';
+
 import styles from '../styles/Article.module.css';
 
 import Keyword from '../components/Keyword';

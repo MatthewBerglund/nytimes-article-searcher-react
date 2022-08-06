@@ -1,17 +1,25 @@
 import { useState, useEffect } from "react";
 
-export function useFetchArticles(urlSearchParams, currentPage) {
-  const [articles, setArticles] = useState(null);
+export interface Article {
+  web_url: string,
+  headline: string,
+  abstract: string,
+  multimedia: Object[],
+  keywords: string[]
+}
+
+export function useFetchArticles(urlSearchParams: URLSearchParams, currentPage: number) {
+  const [articles, setArticles] = useState<Article[]>([]);
   const [totalHits, setTotalHits] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   // Perform a search if search params change
   useEffect(() => {
-    const getFetchUrl = (urlSearchParams) => {
+    const getFetchUrl = (urlSearchParams: URLSearchParams): string => {
       const searchParams = Object.fromEntries([...urlSearchParams]);
       const { query, begin_date, end_date, sort } = searchParams;
-      const baseURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
-      const key = 'brtQ9fXA0I1ATPctklZe6RcanXZRklYl';
+      const baseURL: string = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
+      const key: string = 'brtQ9fXA0I1ATPctklZe6RcanXZRklYl';
       let fullURL = `${baseURL}?api-key=${key}&page=${currentPage}&sort=${sort}`;
 
       fullURL += query ? `&q=${query}` : '';
@@ -26,47 +34,59 @@ export function useFetchArticles(urlSearchParams, currentPage) {
 
     // Encode all active filter fields and values and return them 
     // in an array for insertion into the API fetch URL
-    const getActiveFiltersForFetchURL = (glocation, newsDesks, materialTypes) => {
-      let fetchFilters = [];
+    const getActiveFiltersForFetchURL = (glocation: string, newsDesks: string, materialTypes: string): string[] => {
+      let activeFilters: string[] = [];
 
       if (newsDesks) {
         let values = newsDesks.split(',').map(value => `"${value}"`);
         let encodedValues = encodeURIComponent(values.join(' '));
-        fetchFilters.push(`news_desk:(${encodedValues})`);
+        activeFilters.push(`news_desk:(${encodedValues})`);
       }
 
       if (materialTypes) {
         let values = materialTypes.split(',').map(value => `"${value}"`);
         let encodedValues = encodeURIComponent(values.join(' '));
-        fetchFilters.push(`type_of_material:(${encodedValues})`);
+        activeFilters.push(`type_of_material:(${encodedValues})`);
       }
 
       if (glocation) {
         let value = `"${glocation}"`;
         let encodedValue = encodeURIComponent(value);
-        fetchFilters.push(`glocations.contains:(${encodedValue})`);
+        activeFilters.push(`glocations.contains:(${encodedValue})`);
       }
 
-      return fetchFilters;
+      return activeFilters;
     };
 
-    const fetchArticles = async (url) => {
+    const fetchArticles = async (url: string | URL) => {
       // Do not indicate fetching to user if page has been incremented (pagination)
       setIsLoading(currentPage === 0);
-      const response = await fetch(url);
-      const searchResults = await response.json();
-      const newArticles = searchResults.response.docs;
 
-      // If fetching for infinite scrolling, concat new articles to existing ones, 
-      // otherwise replace existing articles
-      if (currentPage > 0) {
-        setArticles(articles => [...articles, ...newArticles]);
-      } else {
-        setArticles(newArticles);
-        window.scroll(0, 0);
+      try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error('Unable to fetch articles.');
+        }
+
+        const searchResults = await response.json();
+        const newArticles: Article[] = searchResults.response.docs;
+
+        // If fetching for infinite scrolling, concat new articles to existing ones, 
+        // otherwise replace existing articles
+        if (currentPage > 0) {
+          setArticles([...articles, ...newArticles]);
+        } else {
+          setArticles(newArticles);
+          window.scroll(0, 0);
+        }
+
+        setTotalHits(searchResults.response.meta.hits);
+      } catch (error) {
+        alert(error);
+        console.log(error);
       }
 
-      setTotalHits(searchResults.response.meta.hits);
       setIsLoading(false);
     };
 

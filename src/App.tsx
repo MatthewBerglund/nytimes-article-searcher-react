@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, createContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -12,9 +13,9 @@ import './styles/Global.css';
 
 import { useFetchArticles } from './utils/hooks';
 
-export const KeywordClickContext = createContext();
+export const KeywordClickContext = createContext((_keyword: string) => { });
 
-const App = () => {
+const App: React.FC<{}> = () => {
   // urlSearchParams keys: query, begin_date, end_date, glocation, news_desks, material_types
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -26,15 +27,15 @@ const App = () => {
   const totalScrollableHits = (totalHits > 1000) ? 1000 : totalHits;
   const totalScrollablePages = Math.floor(totalScrollableHits / 10);
 
-  const performKeywordSearch = (keyword) => {
+  const performKeywordSearch = (keyword: string) => {
     const searchParams = Object.fromEntries([...urlSearchParams]);
     searchParams.query = keyword;
     searchParams.sort = 'relevance';
     setCurrentPage(0);
-    setUrlSearchParams(searchParams)
+    setUrlSearchParams(searchParams);
   }
 
-  const sortSearchResults = (sortOrder) => {
+  const sortSearchResults = (sortOrder: string) => {
     const searchParams = Object.fromEntries([...urlSearchParams]);
     searchParams.sort = sortOrder;
     setCurrentPage(0);
